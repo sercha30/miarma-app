@@ -4,20 +4,21 @@ import com.salesianostriana.dam.MiarmaApp.peticionSeguimiento.model.PeticionSegu
 import com.salesianostriana.dam.MiarmaApp.publicacion.model.Publicacion;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.Parameter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 @Builder
-public class Usuario implements Serializable {
+public class Usuario implements Serializable, UserDetails {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -41,13 +42,17 @@ public class Usuario implements Serializable {
 
     private String apellidos;
 
+    @NaturalId
+    @Column(nullable = false, updatable = false)
     private String email;
 
     private Date fechaNacimiento;
 
-    private String foto;
+    private String avatar;
 
     private boolean isPublic;
+
+    private UserRole rol;
 
     @Builder.Default
     @ManyToMany
@@ -69,4 +74,33 @@ public class Usuario implements Serializable {
     @OneToMany(mappedBy = "solicitado")
     private List<PeticionSeguimiento> solicitudesPendientes = new ArrayList<>();
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + rol.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 }
