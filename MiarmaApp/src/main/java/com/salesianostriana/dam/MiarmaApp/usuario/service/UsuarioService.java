@@ -6,9 +6,9 @@ import com.salesianostriana.dam.MiarmaApp.usuario.model.UserRole;
 import com.salesianostriana.dam.MiarmaApp.usuario.model.Usuario;
 import com.salesianostriana.dam.MiarmaApp.usuario.repos.UsuarioRepository;
 import com.salesianostriana.dam.MiarmaApp.usuario.service.base.BaseService;
+import com.salesianostriana.dam.MiarmaApp.utils.MultipartImage;
 import lombok.RequiredArgsConstructor;
 import net.coobird.thumbnailator.Thumbnails;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,7 +19,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.UUID;
 
@@ -50,6 +49,7 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
                     .password(passwordEncoder.encode(nuevoUsuario.getPassword()))
                     .apellidos(nuevoUsuario.getApellidos())
                     .avatar(uri)
+                    .nick(nuevoUsuario.getNick())
                     .email(nuevoUsuario.getEmail())
                     .nombre(nuevoUsuario.getNombre())
                     .rol(UserRole.USUARIO)
@@ -85,14 +85,22 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
     }
 
     private MultipartFile resizeImage(MultipartFile originalImage) throws Exception {
-        BufferedImage avatarImage = ImageIO.read(originalImage.getResource().getFile());
+        BufferedImage avatarImage = ImageIO.read(originalImage.getInputStream());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
         Thumbnails.of(avatarImage)
                 .size(128, 128)
                 .outputFormat("png")
                 .outputQuality(1)
                 .toOutputStream(outputStream);
+
         byte[] data = outputStream.toByteArray();
-        return new MockMultipartFile("avatar", new ByteArrayInputStream(data));
+
+        return MultipartImage.builder()
+                .fieldName(originalImage.getName())
+                .fileName(originalImage.getOriginalFilename())
+                .contentType(originalImage.getContentType())
+                .bytes(data)
+                .build();
     }
 }

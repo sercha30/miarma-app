@@ -12,7 +12,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter @Setter
@@ -46,7 +49,7 @@ public class Usuario implements Serializable, UserDetails {
     @Column(nullable = false, updatable = false)
     private String email;
 
-    private Date fechaNacimiento;
+    private String fechaNacimiento;
 
     private String avatar;
 

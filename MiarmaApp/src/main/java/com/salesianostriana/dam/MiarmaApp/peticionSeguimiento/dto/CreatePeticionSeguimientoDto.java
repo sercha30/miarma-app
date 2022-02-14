@@ -6,4 +6,6 @@ import lombok.*;
 @AllArgsConstructor @NoArgsConstructor
 @Builder
 public class CreatePeticionSeguimientoDto {
+
+    private String mensaje;
 }

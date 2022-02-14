@@ -23,7 +23,7 @@ public class JwtProvider {
     public static final String TOKEN_HEADER = "Authorization";
     public static final String TOKEN_PREFIX = "Bearer ";
 
-    @Value("${jwt.secret:miarmaApp987654321013022022}")
+    @Value("${jwt.secret:miarmaApp987654321013022022AlwaysAProblemWithThisSecret}")
     private String jwtSecret;
 
     @Value("${jwt.duration:86400}")
