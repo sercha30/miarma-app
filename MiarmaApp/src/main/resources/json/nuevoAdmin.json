@@ -4,7 +4,7 @@
     "nombre":"Sergio",
     "apellidos":"Chamorro García",
     "fechaNacimiento":"30/12/1995",
-    "isPublic":true,
+    "isPublic":false,
     "password":"admin",
     "password2":"admin"
 }
