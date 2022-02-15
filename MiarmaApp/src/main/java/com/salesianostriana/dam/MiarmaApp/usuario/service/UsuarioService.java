@@ -74,6 +74,7 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
                     .password(passwordEncoder.encode(nuevoAdmin.getPassword()))
                     .apellidos(nuevoAdmin.getApellidos())
                     .avatar(uri)
+                    .nick(nuevoAdmin.getNick())
                     .email(nuevoAdmin.getEmail())
                     .nombre(nuevoAdmin.getNombre())
                     .rol(UserRole.ADMIN)

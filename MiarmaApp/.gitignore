@@ -33,7 +33,7 @@ build/
 .vscode/
 
 ### Database ###
-./db
+.db/
 
 ### Storage ###
-./uploads
+.uploads/
