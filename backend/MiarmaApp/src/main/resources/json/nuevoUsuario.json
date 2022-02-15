@@ -1,0 +1,10 @@
+{
+    "nick":"sergio30",
+    "email":"sergio@email.com",
+    "nombre":"Sergio",
+    "apellidos":"Chamorro García",
+    "fechaNacimiento":"30/12/1995",
+    "isPublic":true,
+    "password":"1234",
+    "password2":"1234"
+}

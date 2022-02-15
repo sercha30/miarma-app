@@ -34,4 +34,17 @@ public class UsuarioController {
                     .body(usuarioDtoConverter.convertUsuarioToUsuarioDto(guardado));
         }
     }
+
+    @PostMapping("/register/admin")
+    public ResponseEntity<GetUsuarioDto> nuevoAdmin(@RequestPart("admin") CreateUsuarioDto createUsuarioDto,
+                                                      @RequestPart("avatar")MultipartFile file) throws Exception {
+        Usuario guardado = usuarioService.saveAdmin(createUsuarioDto, file);
+
+        if(guardado == null){
+            return ResponseEntity.badRequest().build();
+        }else{
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(usuarioDtoConverter.convertUsuarioToUsuarioDto(guardado));
+        }
+    }
 }

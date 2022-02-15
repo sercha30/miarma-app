@@ -2,6 +2,8 @@ package com.salesianostriana.dam.MiarmaApp.security;
 
 import com.salesianostriana.dam.MiarmaApp.security.jwt.JwtProvider;
 import com.salesianostriana.dam.MiarmaApp.security.jwt.JwtUserResponse;
+import com.salesianostriana.dam.MiarmaApp.usuario.dto.GetUsuarioDto;
+import com.salesianostriana.dam.MiarmaApp.usuario.dto.UsuarioDtoConverter;
 import com.salesianostriana.dam.MiarmaApp.usuario.model.Usuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,7 @@ public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
+    private final UsuarioDtoConverter usuarioDtoConverter;
 
     @PostMapping("/login")
     public ResponseEntity<?> doLogin(@RequestBody LoginDto loginDto) {
@@ -44,8 +47,8 @@ public class AuthenticationController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<?> identifyUser(@AuthenticationPrincipal Usuario usuario){
-        return ResponseEntity.ok(convertUserToJwtUserResponse(usuario,null));
+    public ResponseEntity<GetUsuarioDto> identifyUser(@AuthenticationPrincipal Usuario usuario){
+        return ResponseEntity.ok((usuarioDtoConverter.convertUsuarioToUsuarioDto(usuario)));
     }
 
     private JwtUserResponse convertUserToJwtUserResponse(Usuario usuario, String jwt){
