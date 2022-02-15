@@ -7,6 +7,7 @@ import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -37,6 +38,9 @@ public class Publicacion implements Serializable {
     private String media;
 
     private boolean isPublic;
+
+    @Builder.Default
+    private LocalDateTime fechaPublicacion = LocalDateTime.now();
 
     @ManyToOne
     private Usuario propietario;
