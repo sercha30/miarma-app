@@ -1,6 +1,8 @@
 package com.salesianostriana.dam.MiarmaApp.publicacion.service;
 
 import com.salesianostriana.dam.MiarmaApp.publicacion.dto.CreatePublicacionDto;
+import com.salesianostriana.dam.MiarmaApp.publicacion.dto.GetPublicacionDto;
+import com.salesianostriana.dam.MiarmaApp.publicacion.dto.PublicacionDtoConverter;
 import com.salesianostriana.dam.MiarmaApp.publicacion.model.Publicacion;
 import com.salesianostriana.dam.MiarmaApp.publicacion.repos.PublicacionRepository;
 import com.salesianostriana.dam.MiarmaApp.publicacion.service.base.BaseService;
@@ -26,18 +28,12 @@ import java.util.UUID;
 public class PublicacionService extends BaseService<Publicacion, UUID, PublicacionRepository> {
 
     private final StorageService storageService;
+    private final PublicacionDtoConverter dtoConverter;
+    private MultipartFile file;
 
     public Publicacion savePublicacion(CreatePublicacionDto nuevaPublicacion, Usuario usuario,
                                        MultipartFile media) throws Exception {
-        MultipartFile file = null;
-
-        if (media.getContentType().contains("video")) {
-            file = compressVideo(media);
-        } else if(media.getContentType().contains("image")) {
-            file = resizeImage(media);
-        } else {
-            return null;
-        }
+        file = selectMediaType(media);
 
         storageService.store(media);
         String filename = storageService.store(file);
@@ -55,6 +51,37 @@ public class PublicacionService extends BaseService<Publicacion, UUID, Publicaci
                 .propietario(usuario)
                 .build();
         return save(publicacion);
+    }
+
+    public GetPublicacionDto editPublicacion(CreatePublicacionDto publicacion, MultipartFile media,
+                                             Publicacion publicacionAnt) throws Exception {
+        file = selectMediaType(media);
+
+        storageService.store(media);
+        String filename = storageService.store(file);
+
+        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/download/")
+                .path(filename)
+                .toUriString();
+
+        edit(dtoConverter.convertCreatePublicacionDtoToPublicacion(publicacion, publicacionAnt, uri));
+
+        return GetPublicacionDto.builder()
+                .contenido(publicacion.getContenido())
+                .titulo(publicacion.getTitulo())
+                .media(uri)
+                .isPublic(publicacion.isPublic())
+                .build();
+    }
+
+    private MultipartFile selectMediaType(MultipartFile media) throws Exception {
+        if (media.getContentType().contains("video")) {
+            return compressVideo(media);
+        } else if(media.getContentType().contains("image")) {
+            return resizeImage(media);
+        }
+        return null;
     }
 
     private MultipartFile resizeImage(MultipartFile originalImage) throws Exception{
