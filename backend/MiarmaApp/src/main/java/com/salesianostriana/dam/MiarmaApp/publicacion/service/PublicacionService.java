@@ -68,8 +68,11 @@ public class PublicacionService extends BaseService<Publicacion, UUID, Publicaci
         edit(dtoConverter.convertCreatePublicacionDtoToPublicacion(publicacion, publicacionAnt, uri));
 
         return GetPublicacionDto.builder()
+                .id(publicacionAnt.getId())
                 .contenido(publicacion.getContenido())
                 .titulo(publicacion.getTitulo())
+                .nickUsuario(publicacionAnt.getPropietario().getNick())
+                .fechaPublicacion(publicacionAnt.getFechaPublicacion())
                 .media(uri)
                 .isPublic(publicacion.isPublic())
                 .build();
@@ -108,7 +111,7 @@ public class PublicacionService extends BaseService<Publicacion, UUID, Publicaci
         IVCompressor compressor = new IVCompressor();
 
         byte[] data = compressor.reduceVideoSize(originalVideo.getBytes(),
-                VideoFormats.MP4, ResizeResolution.R480P);
+                VideoFormats.MP4, ResizeResolution.R720P);
 
         return MultipartImage.builder()
                 .fieldName(originalVideo.getName())
