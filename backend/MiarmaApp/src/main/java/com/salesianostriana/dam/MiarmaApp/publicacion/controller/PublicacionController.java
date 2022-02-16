@@ -6,6 +6,7 @@ import com.salesianostriana.dam.MiarmaApp.publicacion.dto.PublicacionDtoConverte
 import com.salesianostriana.dam.MiarmaApp.publicacion.model.Publicacion;
 import com.salesianostriana.dam.MiarmaApp.publicacion.service.PublicacionService;
 import com.salesianostriana.dam.MiarmaApp.usuario.model.Usuario;
+import com.salesianostriana.dam.MiarmaApp.usuario.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 public class PublicacionController {
 
     private final PublicacionService publicacionService;
+    private final UsuarioService usuarioService;
     private final PublicacionDtoConverter publicacionDtoConverter;
 
     @PostMapping("/")
@@ -112,6 +114,38 @@ public class PublicacionController {
                         .body(publicacionDtoConverter.convertPublicacionToGetPublicacionDto(publicacion));
             } else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        }
+    }
+
+    @GetMapping("/{nick}")
+    public ResponseEntity<List<GetPublicacionDto>> findAllPublicacionesPorNick(@PathVariable String nick,
+                                                                               @AuthenticationPrincipal Usuario usuario) {
+        Usuario usuarioBuscado = usuarioService.findUsuarioByNick(nick);
+
+        if(usuario.getSeguidos().contains(usuarioBuscado)) {
+            List<Publicacion> publicaciones = publicacionService.findAllPublicacionesPorUsuario(nick);
+
+            if(publicaciones.isEmpty()){
+                return ResponseEntity.noContent().build();
+            } else {
+                return ResponseEntity.ok().body(
+                    publicaciones.stream()
+                            .map(publicacionDtoConverter::convertPublicacionToGetPublicacionDto)
+                            .collect(Collectors.toList())
+                );
+            }
+        } else {
+            List<Publicacion> publicaciones = publicacionService.findAllPublicacionesPublicasPorUsuario(nick);
+
+            if(publicaciones.isEmpty()){
+                return ResponseEntity.noContent().build();
+            } else {
+                return ResponseEntity.ok().body(
+                        publicaciones.stream()
+                                .map(publicacionDtoConverter::convertPublicacionToGetPublicacionDto)
+                                .collect(Collectors.toList())
+                );
             }
         }
     }

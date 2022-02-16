@@ -85,6 +85,11 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
         }
     }
 
+    public Usuario findUsuarioByNick(String nick) {
+        return repositorio.findFirstByNick(nick)
+                .orElseThrow(() -> new UsernameNotFoundException(nick + " no encontrado"));
+    }
+
     private MultipartFile resizeImage(MultipartFile originalImage) throws Exception {
         BufferedImage avatarImage = ImageIO.read(originalImage.getInputStream());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

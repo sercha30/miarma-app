@@ -89,6 +89,14 @@ public class PublicacionService extends BaseService<Publicacion, UUID, Publicaci
         return publicacionRepository.findAllByPublicIsTrue();
     }
 
+    public List<Publicacion> findAllPublicacionesPorUsuario(String nickname) {
+        return publicacionRepository.findAllByNickname(nickname);
+    }
+
+    public List<Publicacion> findAllPublicacionesPublicasPorUsuario(String nickname) {
+        return publicacionRepository.findAllByNicknameAndPublic(nickname);
+    }
+
     private MultipartFile selectMediaType(MultipartFile media) throws Exception {
         if (media.getContentType().contains("video")) {
             return compressVideo(media);
