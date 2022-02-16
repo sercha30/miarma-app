@@ -94,4 +94,25 @@ public class PublicacionController {
             );
         }
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<GetPublicacionDto> findPublicacionById(@PathVariable UUID id,
+                                                                 @AuthenticationPrincipal Usuario usuario) {
+        Optional<Publicacion> publicacionOptional = publicacionService.findById(id);
+
+        if(publicacionOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            Publicacion publicacion = publicacionOptional.get();
+            UUID propietarioId = publicacion.getPropietario().getId();
+
+            if(propietarioId.equals(usuario.getId()) || publicacion.isPublic()
+                || usuario.getSeguidos().contains(publicacion.getPropietario())) {
+                return ResponseEntity.ok()
+                        .body(publicacionDtoConverter.convertPublicacionToGetPublicacionDto(publicacion));
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        }
+    }
 }

@@ -58,12 +58,32 @@ public class Usuario implements Serializable, UserDetails {
     private UserRole rol;
 
     @Builder.Default
-    @ManyToMany
+    @ManyToMany(mappedBy = "seguidos", fetch = FetchType.EAGER)
     private List<Usuario> seguidores = new ArrayList<>();
 
     @Builder.Default
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(joinColumns = @JoinColumn(name = "seguido_id",
+                            foreignKey = @ForeignKey(name = "FK_SEGUIDOR_SEGUIDO")),
+            inverseJoinColumns = @JoinColumn(name = "seguidor_id",
+                            foreignKey = @ForeignKey(name = "FK_SEGUIDO_SEGUIDOR")),
+            name = "followers"
+    )
     private List<Usuario> seguidos = new ArrayList<>();
+
+    //*********** HELPERS ***************
+
+    public void addSeguidor(Usuario u) {
+        this.getSeguidores().add(u);
+        u.getSeguidos().add(this);
+    }
+
+    public void removeSeguidor(Usuario u) {
+        u.getSeguidos().remove(this);
+        this.getSeguidores().remove(u);
+    }
+
+    //***********************************
 
     @Builder.Default
     @OneToMany(mappedBy = "propietario")
