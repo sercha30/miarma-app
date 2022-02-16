@@ -58,4 +58,23 @@ public class PublicacionController {
             }
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePublicacion(@PathVariable UUID id,
+                                               @AuthenticationPrincipal Usuario usuario) {
+        Optional<Publicacion> publicacionOptional = publicacionService.findById(id);
+
+        if(publicacionOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            Publicacion publicacion = publicacionOptional.get();
+
+            if(usuario.getId().equals(publicacion.getPropietario().getId())) {
+                publicacionService.deletePublicacion(publicacion);
+                return ResponseEntity.noContent().build();
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        }
+    }
 }

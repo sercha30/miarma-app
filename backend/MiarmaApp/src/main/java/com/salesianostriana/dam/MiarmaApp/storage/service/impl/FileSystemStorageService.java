@@ -101,8 +101,14 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public void deleteFile(String filename) {
-
+    public void deleteFile(String uri) {
+        try {
+            String filename = uri.split("/")[4];
+            Path file = load(filename);
+            Files.delete(file);
+        } catch (IOException ex) {
+            throw new StorageException("Error al borrar el archivo", ex);
+        }
     }
 
     @Override

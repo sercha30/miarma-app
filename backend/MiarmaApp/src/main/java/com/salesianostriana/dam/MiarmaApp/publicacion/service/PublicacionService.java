@@ -78,6 +78,11 @@ public class PublicacionService extends BaseService<Publicacion, UUID, Publicaci
                 .build();
     }
 
+    public void deletePublicacion(Publicacion publicacion) {
+        storageService.deleteFile(publicacion.getMedia());
+        delete(publicacion);
+    }
+
     private MultipartFile selectMediaType(MultipartFile media) throws Exception {
         if (media.getContentType().contains("video")) {
             return compressVideo(media);
