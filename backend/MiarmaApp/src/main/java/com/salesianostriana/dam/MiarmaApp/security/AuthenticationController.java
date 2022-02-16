@@ -2,7 +2,7 @@ package com.salesianostriana.dam.MiarmaApp.security;
 
 import com.salesianostriana.dam.MiarmaApp.security.jwt.JwtProvider;
 import com.salesianostriana.dam.MiarmaApp.security.jwt.JwtUserResponse;
-import com.salesianostriana.dam.MiarmaApp.usuario.dto.GetUsuarioDto;
+import com.salesianostriana.dam.MiarmaApp.usuario.dto.GetPerfilUsuarioDto;
 import com.salesianostriana.dam.MiarmaApp.usuario.dto.UsuarioDtoConverter;
 import com.salesianostriana.dam.MiarmaApp.usuario.model.Usuario;
 import lombok.RequiredArgsConstructor;
@@ -47,8 +47,8 @@ public class AuthenticationController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<GetUsuarioDto> identifyUser(@AuthenticationPrincipal Usuario usuario){
-        return ResponseEntity.ok((usuarioDtoConverter.convertUsuarioToUsuarioDto(usuario)));
+    public ResponseEntity<GetPerfilUsuarioDto> identifyUser(@AuthenticationPrincipal Usuario usuario){
+        return ResponseEntity.ok((usuarioDtoConverter.convertUsuarioToGetPerfilUsuarioDto(usuario)));
     }
 
     private JwtUserResponse convertUserToJwtUserResponse(Usuario usuario, String jwt){

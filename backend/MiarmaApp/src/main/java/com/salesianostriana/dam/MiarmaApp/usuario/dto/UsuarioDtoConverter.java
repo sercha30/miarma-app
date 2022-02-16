@@ -15,4 +15,17 @@ public class UsuarioDtoConverter {
                 .rol(usuario.getRol().name())
                 .build();
     }
+
+    public GetPerfilUsuarioDto convertUsuarioToGetPerfilUsuarioDto(Usuario usuario) {
+        return GetPerfilUsuarioDto.builder()
+                .id(usuario.getId())
+                .nick(usuario.getNick())
+                .email(usuario.getEmail())
+                .avatar(usuario.getAvatar())
+                .rol(usuario.getRol().name())
+                .nombre(usuario.getNombre())
+                .apellidos(usuario.getApellidos())
+                .publicaciones(usuario.getPublicaciones())
+                .build();
+    }
 }

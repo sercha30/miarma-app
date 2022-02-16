@@ -89,6 +89,18 @@ public class Usuario implements Serializable, UserDetails {
     @OneToMany(mappedBy = "propietario")
     private List<Publicacion> publicaciones = new ArrayList<>();
 
+    //*********** HELPERS ***************
+
+    public void addPublicacion(Publicacion p) {
+        this.getPublicaciones().add(p);
+    }
+
+    public void removePublicacion(Publicacion p) {
+        this.getPublicaciones().remove(p);
+    }
+
+    //***********************************
+
     @Builder.Default
     @OneToMany(mappedBy = "solicitante")
     private List<PeticionSeguimiento> solicitudesActivas = new ArrayList<>();

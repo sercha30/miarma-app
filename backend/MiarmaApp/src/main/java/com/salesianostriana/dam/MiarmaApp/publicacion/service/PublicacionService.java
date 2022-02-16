@@ -52,11 +52,14 @@ public class PublicacionService extends BaseService<Publicacion, UUID, Publicaci
                 .isPublic(nuevaPublicacion.isPublic())
                 .propietario(usuario)
                 .build();
+
+        usuario.addPublicacion(publicacion);
+
         return save(publicacion);
     }
 
     public GetPublicacionDto editPublicacion(CreatePublicacionDto publicacion, MultipartFile media,
-                                             Publicacion publicacionAnt) throws Exception {
+                                             Publicacion publicacionAnt, Usuario usuario) throws Exception {
         file = selectMediaType(media);
 
         storageService.store(media);
@@ -67,7 +70,13 @@ public class PublicacionService extends BaseService<Publicacion, UUID, Publicaci
                 .path(filename)
                 .toUriString();
 
-        edit(dtoConverter.convertCreatePublicacionDtoToPublicacion(publicacion, publicacionAnt, uri));
+        Publicacion publicacionEditada = dtoConverter
+                .convertCreatePublicacionDtoToPublicacion(publicacion, publicacionAnt, uri);
+
+        edit(publicacionEditada);
+
+        usuario.removePublicacion(publicacionAnt);
+        usuario.addPublicacion(publicacionEditada);
 
         return GetPublicacionDto.builder()
                 .id(publicacionAnt.getId())

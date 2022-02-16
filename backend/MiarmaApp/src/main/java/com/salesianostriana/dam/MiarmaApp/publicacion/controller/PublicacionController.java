@@ -56,7 +56,7 @@ public class PublicacionController {
 
             if(usuario.getId().equals(publicacionAnt.getPropietario().getId())) {
                 return ResponseEntity.status(HttpStatus.CREATED)
-                        .body(publicacionService.editPublicacion(nuevaPublicacion, file, publicacionAnt));
+                        .body(publicacionService.editPublicacion(nuevaPublicacion, file, publicacionAnt, usuario));
             } else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
@@ -74,6 +74,7 @@ public class PublicacionController {
             Publicacion publicacion = publicacionOptional.get();
 
             if(usuario.getId().equals(publicacion.getPropietario().getId())) {
+                usuario.removePublicacion(publicacion);
                 publicacionService.deletePublicacion(publicacion);
                 return ResponseEntity.noContent().build();
             } else {
@@ -118,7 +119,7 @@ public class PublicacionController {
         }
     }
 
-    @GetMapping("/{nick}")
+    @GetMapping("/{nick}/")
     public ResponseEntity<List<GetPublicacionDto>> getAllPublicacionesPorNick(@PathVariable String nick,
                                                                                @AuthenticationPrincipal Usuario usuario) {
         Usuario usuarioBuscado = usuarioService.findUsuarioByNick(nick);
