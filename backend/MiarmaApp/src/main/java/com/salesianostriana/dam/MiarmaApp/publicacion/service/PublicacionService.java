@@ -21,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -28,6 +29,7 @@ import java.util.UUID;
 public class PublicacionService extends BaseService<Publicacion, UUID, PublicacionRepository> {
 
     private final StorageService storageService;
+    private final PublicacionRepository publicacionRepository;
     private final PublicacionDtoConverter dtoConverter;
     private MultipartFile file;
 
@@ -81,6 +83,10 @@ public class PublicacionService extends BaseService<Publicacion, UUID, Publicaci
     public void deletePublicacion(Publicacion publicacion) {
         storageService.deleteFile(publicacion.getMedia());
         delete(publicacion);
+    }
+
+    public List<Publicacion> findAllPublicacionesPublicas() {
+        return publicacionRepository.findAllByPublicIsTrue();
     }
 
     private MultipartFile selectMediaType(MultipartFile media) throws Exception {

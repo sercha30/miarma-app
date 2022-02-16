@@ -13,8 +13,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -75,6 +77,21 @@ public class PublicacionController {
             } else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
+        }
+    }
+
+    @GetMapping("/public")
+    public ResponseEntity<List<GetPublicacionDto>> findAllPublicacionesPublicas() {
+        List<Publicacion> publicaciones = publicacionService.findAllPublicacionesPublicas();
+
+        if(publicaciones.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok().body(
+                    publicaciones.stream()
+                            .map(publicacionDtoConverter::convertPublicacionToGetPublicacionDto)
+                            .collect(Collectors.toList())
+            );
         }
     }
 }
