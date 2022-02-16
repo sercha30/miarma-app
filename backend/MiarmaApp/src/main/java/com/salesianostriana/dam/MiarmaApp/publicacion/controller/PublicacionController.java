@@ -83,7 +83,7 @@ public class PublicacionController {
     }
 
     @GetMapping("/public")
-    public ResponseEntity<List<GetPublicacionDto>> findAllPublicacionesPublicas() {
+    public ResponseEntity<List<GetPublicacionDto>> getAllPublicacionesPublicas() {
         List<Publicacion> publicaciones = publicacionService.findAllPublicacionesPublicas();
 
         if(publicaciones.isEmpty()) {
@@ -98,7 +98,7 @@ public class PublicacionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GetPublicacionDto> findPublicacionById(@PathVariable UUID id,
+    public ResponseEntity<GetPublicacionDto> getPublicacionById(@PathVariable UUID id,
                                                                  @AuthenticationPrincipal Usuario usuario) {
         Optional<Publicacion> publicacionOptional = publicacionService.findById(id);
 
@@ -119,7 +119,7 @@ public class PublicacionController {
     }
 
     @GetMapping("/{nick}")
-    public ResponseEntity<List<GetPublicacionDto>> findAllPublicacionesPorNick(@PathVariable String nick,
+    public ResponseEntity<List<GetPublicacionDto>> getAllPublicacionesPorNick(@PathVariable String nick,
                                                                                @AuthenticationPrincipal Usuario usuario) {
         Usuario usuarioBuscado = usuarioService.findUsuarioByNick(nick);
 
@@ -147,6 +147,21 @@ public class PublicacionController {
                                 .collect(Collectors.toList())
                 );
             }
+        }
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<List<GetPublicacionDto>> getPublicacionesUsuarioLogueado(@AuthenticationPrincipal Usuario usuario) {
+        List<Publicacion> publicaciones = publicacionService.findAllPublicacionesUsuarioLogueado(usuario);
+
+        if(publicaciones.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok().body(
+                    publicaciones.stream()
+                            .map(publicacionDtoConverter::convertPublicacionToGetPublicacionDto)
+                            .collect(Collectors.toList())
+            );
         }
     }
 }

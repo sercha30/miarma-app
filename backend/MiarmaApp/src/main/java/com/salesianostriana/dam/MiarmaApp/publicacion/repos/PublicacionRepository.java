@@ -1,6 +1,7 @@
 package com.salesianostriana.dam.MiarmaApp.publicacion.repos;
 
 import com.salesianostriana.dam.MiarmaApp.publicacion.model.Publicacion;
+import com.salesianostriana.dam.MiarmaApp.usuario.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,4 +20,6 @@ public interface PublicacionRepository extends JpaRepository<Publicacion, UUID> 
     @Query("select p from Publicacion p where p.propietario.nick = :nickname" +
             " and p.isPublic = true")
     List<Publicacion> findAllByNicknameAndPublic(@Param("nickname") String nickname);
+
+    List<Publicacion> findAllByPropietarioEquals(Usuario usuario);
 }
