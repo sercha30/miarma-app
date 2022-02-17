@@ -47,54 +47,27 @@ public class PublicacionController {
                                                              @RequestPart("post")CreatePublicacionDto nuevaPublicacion,
                                                              @RequestPart("media")MultipartFile file,
                                                              @AuthenticationPrincipal Usuario usuario) throws Exception {
-        Optional<Publicacion> publicacionOptional = publicacionService.findById(id);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(publicacionService.editPublicacion(nuevaPublicacion, file, id, usuario));
 
-        if(publicacionOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            Publicacion publicacionAnt = publicacionOptional.get();
-
-            if(usuario.getId().equals(publicacionAnt.getPropietario().getId())) {
-                return ResponseEntity.status(HttpStatus.CREATED)
-                        .body(publicacionService.editPublicacion(nuevaPublicacion, file, publicacionAnt, usuario));
-            } else {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            }
-        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePublicacion(@PathVariable UUID id,
                                                @AuthenticationPrincipal Usuario usuario) {
-        Optional<Publicacion> publicacionOptional = publicacionService.findById(id);
-
-        if(publicacionOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            Publicacion publicacion = publicacionOptional.get();
-
-            if(usuario.getId().equals(publicacion.getPropietario().getId())) {
-                publicacionService.deletePublicacion(publicacion);
-                return ResponseEntity.noContent().build();
-            } else {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            }
-        }
+        publicacionService.deletePublicacion(id, usuario);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/public")
     public ResponseEntity<List<GetPublicacionDto>> getAllPublicacionesPublicas() {
         List<Publicacion> publicaciones = publicacionService.findAllPublicacionesPublicas();
 
-        if(publicaciones.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.ok().body(
-                    publicaciones.stream()
-                            .map(publicacionDtoConverter::convertPublicacionToGetPublicacionDto)
-                            .collect(Collectors.toList())
-            );
-        }
+        return ResponseEntity.ok().body(
+                publicaciones.stream()
+                        .map(publicacionDtoConverter::convertPublicacionToGetPublicacionDto)
+                        .collect(Collectors.toList())
+        );
     }
 
     @GetMapping("/{id}")
@@ -123,30 +96,22 @@ public class PublicacionController {
                                                                                @AuthenticationPrincipal Usuario usuario) {
         Usuario usuarioBuscado = usuarioService.findUsuarioByNick(nick);
 
+        List<Publicacion> publicaciones;
+
         if(usuario.getSeguidos().contains(usuarioBuscado)) {
-            List<Publicacion> publicaciones = publicacionService.findAllPublicacionesPorUsuario(nick);
-
-            if(publicaciones.isEmpty()){
-                return ResponseEntity.noContent().build();
-            } else {
-                return ResponseEntity.ok().body(
-                    publicaciones.stream()
-                            .map(publicacionDtoConverter::convertPublicacionToGetPublicacionDto)
-                            .collect(Collectors.toList())
-                );
-            }
+            publicaciones = publicacionService.findAllPublicacionesPorUsuario(nick);
         } else {
-            List<Publicacion> publicaciones = publicacionService.findAllPublicacionesPublicasPorUsuario(nick);
+            publicaciones = publicacionService.findAllPublicacionesPublicasPorUsuario(nick);
+        }
 
-            if(publicaciones.isEmpty()){
-                return ResponseEntity.noContent().build();
-            } else {
-                return ResponseEntity.ok().body(
-                        publicaciones.stream()
-                                .map(publicacionDtoConverter::convertPublicacionToGetPublicacionDto)
-                                .collect(Collectors.toList())
-                );
-            }
+        if(publicaciones.isEmpty()){
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok().body(
+                publicaciones.stream()
+                        .map(publicacionDtoConverter::convertPublicacionToGetPublicacionDto)
+                        .collect(Collectors.toList())
+            );
         }
     }
 

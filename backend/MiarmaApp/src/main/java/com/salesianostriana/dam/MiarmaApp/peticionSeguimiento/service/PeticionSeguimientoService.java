@@ -1,6 +1,6 @@
 package com.salesianostriana.dam.MiarmaApp.peticionSeguimiento.service;
 
-import com.salesianostriana.dam.MiarmaApp.exception.peticionSeguimiento.AlreadyFollowedUserException;
+import com.salesianostriana.dam.MiarmaApp.errors.exception.peticionSeguimiento.AlreadyFollowedUserException;
 import com.salesianostriana.dam.MiarmaApp.peticionSeguimiento.model.PeticionSeguimiento;
 import com.salesianostriana.dam.MiarmaApp.peticionSeguimiento.repos.PeticionSeguimientoRepository;
 import com.salesianostriana.dam.MiarmaApp.publicacion.service.base.BaseService;

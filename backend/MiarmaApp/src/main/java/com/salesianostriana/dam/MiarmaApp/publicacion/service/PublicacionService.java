@@ -1,5 +1,9 @@
 package com.salesianostriana.dam.MiarmaApp.publicacion.service;
 
+import com.salesianostriana.dam.MiarmaApp.errors.exception.entity.ListEntityNotFoundException;
+import com.salesianostriana.dam.MiarmaApp.errors.exception.entity.SingleEntityNotFoundException;
+import com.salesianostriana.dam.MiarmaApp.errors.exception.general.ActionNotAvailableException;
+import com.salesianostriana.dam.MiarmaApp.errors.exception.storage.MediaTypeNotValidException;
 import com.salesianostriana.dam.MiarmaApp.publicacion.dto.CreatePublicacionDto;
 import com.salesianostriana.dam.MiarmaApp.publicacion.dto.GetPublicacionDto;
 import com.salesianostriana.dam.MiarmaApp.publicacion.dto.PublicacionDtoConverter;
@@ -22,6 +26,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -57,40 +63,70 @@ public class PublicacionService extends BaseService<Publicacion, UUID, Publicaci
     }
 
     public GetPublicacionDto editPublicacion(CreatePublicacionDto publicacion, MultipartFile media,
-                                             Publicacion publicacionAnt, Usuario usuario) throws Exception {
-        file = selectMediaType(media);
+                                             UUID id, Usuario usuario) throws Exception {
+        Optional<Publicacion> publicacionOptional = findById(id);
 
-        storageService.store(media);
-        String filename = storageService.store(file);
+        if(publicacionOptional.isEmpty()) {
+            throw new SingleEntityNotFoundException(id.toString(), Publicacion.class);
+        } else {
+            Publicacion publicacionAnt = publicacionOptional.get();
 
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
-                .path(filename)
-                .toUriString();
+            if(usuario.getId().equals(publicacionAnt.getPropietario().getId())) {
+                file = selectMediaType(media);
 
-        Publicacion publicacionEditada = dtoConverter
-                .convertCreatePublicacionDtoToPublicacion(publicacion, publicacionAnt, uri);
+                storageService.store(media);
+                String filename = storageService.store(file);
 
-        edit(publicacionEditada);
+                String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                        .path("/download/")
+                        .path(filename)
+                        .toUriString();
 
-        return GetPublicacionDto.builder()
-                .id(publicacionAnt.getId())
-                .contenido(publicacion.getContenido())
-                .titulo(publicacion.getTitulo())
-                .nickUsuario(publicacionAnt.getPropietario().getNick())
-                .fechaPublicacion(publicacionAnt.getFechaPublicacion())
-                .media(uri)
-                .isPublic(publicacion.isPublic())
-                .build();
+                Publicacion publicacionEditada = dtoConverter
+                        .convertCreatePublicacionDtoToPublicacion(publicacion, publicacionAnt, uri);
+
+                edit(publicacionEditada);
+
+                return GetPublicacionDto.builder()
+                        .id(publicacionAnt.getId())
+                        .contenido(publicacion.getContenido())
+                        .titulo(publicacion.getTitulo())
+                        .nickUsuario(publicacionAnt.getPropietario().getNick())
+                        .fechaPublicacion(publicacionAnt.getFechaPublicacion())
+                        .media(uri)
+                        .isPublic(publicacion.isPublic())
+                        .build();
+            } else {
+                throw new ActionNotAvailableException();
+            }
+        }
     }
 
-    public void deletePublicacion(Publicacion publicacion) {
-        storageService.deleteFile(publicacion.getMedia());
-        delete(publicacion);
+    public void deletePublicacion(UUID id, Usuario usuario) {
+        Optional<Publicacion> publicacionOptional = findById(id);
+
+        if(publicacionOptional.isEmpty()) {
+            throw new SingleEntityNotFoundException(id.toString(), Publicacion.class);
+        } else {
+            Publicacion publicacion = publicacionOptional.get();
+
+            if (usuario.getId().equals(publicacion.getPropietario().getId())) {
+                storageService.deleteFile(publicacion.getMedia());
+                delete(publicacion);
+            } else {
+                throw new ActionNotAvailableException();
+            }
+        }
     }
 
     public List<Publicacion> findAllPublicacionesPublicas() {
-        return publicacionRepository.findAllByPublicIsTrue();
+        List<Publicacion> publicaciones = publicacionRepository.findAllByPublicIsTrue();
+
+        if(publicaciones.isEmpty()) {
+            throw new ListEntityNotFoundException(Publicacion.class);
+        } else {
+            return publicaciones;
+        }
     }
 
     public List<Publicacion> findAllPublicacionesPorUsuario(String nickname) {
@@ -106,12 +142,13 @@ public class PublicacionService extends BaseService<Publicacion, UUID, Publicaci
     }
 
     private MultipartFile selectMediaType(MultipartFile media) throws Exception {
-        if (media.getContentType().contains("video")) {
+        if (Objects.requireNonNull(media.getContentType()).contains("video")) {
             return compressVideo(media);
         } else if(media.getContentType().contains("image")) {
             return resizeImage(media);
+        } else {
+            throw new MediaTypeNotValidException(media.getContentType());
         }
-        return null;
     }
 
     private MultipartFile resizeImage(MultipartFile originalImage) throws Exception{

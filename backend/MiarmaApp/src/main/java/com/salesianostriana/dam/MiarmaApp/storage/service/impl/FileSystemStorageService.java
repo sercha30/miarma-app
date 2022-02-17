@@ -1,7 +1,7 @@
 package com.salesianostriana.dam.MiarmaApp.storage.service.impl;
 
-import com.salesianostriana.dam.MiarmaApp.exception.storage.FileNotFoundException;
-import com.salesianostriana.dam.MiarmaApp.exception.storage.StorageException;
+import com.salesianostriana.dam.MiarmaApp.errors.exception.storage.FileNotFoundException;
+import com.salesianostriana.dam.MiarmaApp.errors.exception.storage.StorageException;
 import com.salesianostriana.dam.MiarmaApp.storage.config.StorageProperties;
 import com.salesianostriana.dam.MiarmaApp.storage.service.StorageService;
 import com.salesianostriana.dam.MiarmaApp.utils.MediaTypeUrlResource;

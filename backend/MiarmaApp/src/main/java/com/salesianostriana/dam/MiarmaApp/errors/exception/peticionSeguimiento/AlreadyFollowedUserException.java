@@ -1,4 +1,4 @@
-package com.salesianostriana.dam.MiarmaApp.exception.peticionSeguimiento;
+package com.salesianostriana.dam.MiarmaApp.errors.exception.peticionSeguimiento;
 
 public class AlreadyFollowedUserException extends RuntimeException{
 

@@ -1,4 +1,4 @@
-package com.salesianostriana.dam.MiarmaApp.exception.storage;
+package com.salesianostriana.dam.MiarmaApp.errors.exception.storage;
 
 public class FileNotFoundException extends RuntimeException{
 
