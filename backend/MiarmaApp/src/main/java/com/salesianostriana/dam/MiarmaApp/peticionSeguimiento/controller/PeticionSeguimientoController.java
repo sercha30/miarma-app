@@ -10,13 +10,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -69,6 +68,22 @@ public class PeticionSeguimientoController {
             psService.delete(ps);
 
             return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<GetPeticionSeguimientoDto>> getPeticionesUsuario(@AuthenticationPrincipal Usuario usuario) {
+        List<PeticionSeguimiento> psList = psService.findAllPSUsuario(usuario);
+
+        if(psList.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok()
+                    .body(
+                            psList.stream()
+                                    .map(psDtoConverter::convertPSToGetPSDto)
+                                    .collect(Collectors.toList())
+                    );
         }
     }
 }
