@@ -5,6 +5,7 @@ import com.salesianostriana.dam.MiarmaApp.peticionSeguimiento.dto.PeticionSeguim
 import com.salesianostriana.dam.MiarmaApp.peticionSeguimiento.model.PeticionSeguimiento;
 import com.salesianostriana.dam.MiarmaApp.peticionSeguimiento.service.PeticionSeguimientoService;
 import com.salesianostriana.dam.MiarmaApp.usuario.model.Usuario;
+import com.salesianostriana.dam.MiarmaApp.usuario.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +15,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/follow")
 public class PeticionSeguimientoController {
 
     private final PeticionSeguimientoService psService;
+    private final UsuarioService usuarioService;
     private final PeticionSeguimientoDtoConverter psDtoConverter;
 
     @PostMapping("/{nick}")
@@ -29,5 +34,23 @@ public class PeticionSeguimientoController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(psDtoConverter.convertPSToGetPSDto(ps));
+    }
+
+    @PostMapping("/accept/{id}")
+    public ResponseEntity<?> aceptarPeticion(@PathVariable UUID id,
+                                             @AuthenticationPrincipal Usuario usuario) {
+        Optional<PeticionSeguimiento> psOptional = psService.findById(id);
+
+        if(psOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            PeticionSeguimiento ps = psOptional.get();
+            usuario.addSeguidor(ps.getSolicitante());
+            usuarioService.edit(usuario);
+            usuarioService.edit(ps.getSolicitante());
+            psService.delete(ps);
+
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
     }
 }
