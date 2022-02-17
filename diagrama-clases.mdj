@@ -237,7 +237,7 @@
 											"top": 512,
 											"width": 294.4931640625,
 											"height": 13,
-											"text": "+fechaNacimiento: Date",
+											"text": "+fechaNacimiento: String",
 											"horizontalAlignment": 0
 										},
 										{
@@ -254,7 +254,7 @@
 											"top": 527,
 											"width": 294.4931640625,
 											"height": 13,
-											"text": "+foto: String",
+											"text": "+avatar: String",
 											"horizontalAlignment": 0
 										},
 										{
@@ -276,6 +276,41 @@
 										},
 										{
 											"_type": "UMLAttributeView",
+											"_id": "AAAAAAF/CRzG9f1ZkjI=",
+											"_parent": {
+												"$ref": "AAAAAAF+6J+Pwg6al10="
+											},
+											"model": {
+												"$ref": "AAAAAAF/CRzG7P1W5/U="
+											},
+											"visible": false,
+											"font": "Arial;13;0",
+											"left": 581,
+											"top": 557,
+											"width": 294.4931640625,
+											"height": 13,
+											"text": "+Attribute1",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAF/CRujyPu0z90=",
+											"_parent": {
+												"$ref": "AAAAAAF+6J+Pwg6al10="
+											},
+											"model": {
+												"$ref": "AAAAAAF/CRujs/ux2n4="
+											},
+											"font": "Arial;13;0",
+											"left": 581,
+											"top": 557,
+											"width": 294.4931640625,
+											"height": 13,
+											"text": "+seguidos: List<Usuario>",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
 											"_id": "AAAAAAF+6Kghog9t+fg=",
 											"_parent": {
 												"$ref": "AAAAAAF+6J+Pwg6al10="
@@ -285,7 +320,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 581,
-											"top": 557,
+											"top": 572,
 											"width": 294.4931640625,
 											"height": 13,
 											"text": "+seguidores: List<Usuario>",
@@ -302,7 +337,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 581,
-											"top": 572,
+											"top": 587,
 											"width": 294.4931640625,
 											"height": 13,
 											"text": "+publicaciones: List<Publicacion>",
@@ -319,7 +354,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 581,
-											"top": 587,
+											"top": 602,
 											"width": 294.4931640625,
 											"height": 13,
 											"text": "+solicitudesActivas: List<PeticionSeguimiento>",
@@ -336,7 +371,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 581,
-											"top": 602,
+											"top": 617,
 											"width": 294.4931640625,
 											"height": 13,
 											"text": "+solicitudesPendientes: List<PeticionSeguimiento>",
@@ -347,7 +382,7 @@
 									"left": 576,
 									"top": 417,
 									"width": 304.4931640625,
-									"height": 203
+									"height": 218
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -360,7 +395,7 @@
 									},
 									"font": "Arial;13;0",
 									"left": 576,
-									"top": 620,
+									"top": 635,
 									"width": 304.4931640625,
 									"height": 10
 								},
@@ -402,7 +437,7 @@
 							"left": 576,
 							"top": 392,
 							"width": 304.4931640625,
-							"height": 238,
+							"height": 253,
 							"nameCompartment": {
 								"$ref": "AAAAAAF+6J+PwQ6V/GU="
 							},
@@ -2147,7 +2182,7 @@
 								"$ref": "AAAAAAF+6J+PwA6S9OM="
 							},
 							"name": "fechaNacimiento",
-							"type": "Date"
+							"type": "String"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -2155,7 +2190,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF+6J+PwA6S9OM="
 							},
-							"name": "foto",
+							"name": "avatar",
 							"type": "String"
 						},
 						{
@@ -2166,6 +2201,24 @@
 							},
 							"name": "isPublic",
 							"type": "boolean"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAF/CRzG7P1W5/U=",
+							"_parent": {
+								"$ref": "AAAAAAF+6J+PwA6S9OM="
+							},
+							"name": "Attribute1",
+							"type": ""
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAF/CRujs/ux2n4=",
+							"_parent": {
+								"$ref": "AAAAAAF+6J+PwA6S9OM="
+							},
+							"name": "seguidos",
+							"type": "List<Usuario>"
 						},
 						{
 							"_type": "UMLAttribute",
