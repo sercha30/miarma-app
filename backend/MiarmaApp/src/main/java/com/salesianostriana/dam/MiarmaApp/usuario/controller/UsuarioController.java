@@ -68,4 +68,14 @@ public class UsuarioController {
             }
         }
     }
+
+    @PutMapping("profile/me")
+    public ResponseEntity<GetPerfilUsuarioDto> editPerfilUsuario(@AuthenticationPrincipal Usuario usuario,
+                                                                 @RequestPart("usuario") CreateUsuarioDto usuarioDto,
+                                                                 @RequestPart("avatar") MultipartFile file) throws Exception {
+        return ResponseEntity.ok()
+                .body(
+                        usuarioDtoConverter
+                                .convertUsuarioToGetPerfilUsuarioDto(usuarioService.editUsuario(usuarioDto, file, usuario)));
+    }
 }

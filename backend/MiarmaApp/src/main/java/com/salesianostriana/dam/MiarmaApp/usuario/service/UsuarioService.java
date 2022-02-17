@@ -92,6 +92,29 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
                 .orElseThrow(() -> new UsernameNotFoundException(nick + " no encontrado"));
     }
 
+    public Usuario editUsuario(CreateUsuarioDto nuevoUsuario, MultipartFile file, Usuario usuarioAnt) throws Exception {
+        MultipartFile thumbnail = resizeImage(file);
+        String filename = storageService.store(thumbnail);
+
+        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/download/")
+                .path(filename)
+                .toUriString();
+
+        Usuario usuario = Usuario.builder()
+                .id(usuarioAnt.getId())
+                .apellidos(nuevoUsuario.getApellidos())
+                .avatar(uri)
+                .nick(nuevoUsuario.getNick())
+                .email(nuevoUsuario.getEmail())
+                .nombre(nuevoUsuario.getNombre())
+                .rol(UserRole.USUARIO)
+                .isPublic(nuevoUsuario.isPublic())
+                .build();
+
+        return edit(usuario);
+    }
+
     private MultipartFile resizeImage(MultipartFile originalImage) throws Exception {
         BufferedImage avatarImage = ImageIO.read(originalImage.getInputStream());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
