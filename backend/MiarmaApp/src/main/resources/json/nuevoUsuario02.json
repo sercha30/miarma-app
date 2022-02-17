@@ -4,7 +4,7 @@
     "nombre":"Pepa",
     "apellidos":"Chacón Manzano",
     "fechaNacimiento":"15/09/1995",
-    "isPublic":true,
+    "public":true,
     "password":"1234",
     "password2":"1234"
 }

@@ -53,8 +53,6 @@ public class PublicacionService extends BaseService<Publicacion, UUID, Publicaci
                 .propietario(usuario)
                 .build();
 
-        usuario.addPublicacion(publicacion);
-
         return save(publicacion);
     }
 
@@ -74,9 +72,6 @@ public class PublicacionService extends BaseService<Publicacion, UUID, Publicaci
                 .convertCreatePublicacionDtoToPublicacion(publicacion, publicacionAnt, uri);
 
         edit(publicacionEditada);
-
-        usuario.removePublicacion(publicacionAnt);
-        usuario.addPublicacion(publicacionEditada);
 
         return GetPublicacionDto.builder()
                 .id(publicacionAnt.getId())

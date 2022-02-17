@@ -25,6 +25,7 @@ com\salesianostriana\dam\MiarmaApp\usuario\model\Usuario.class
 com\salesianostriana\dam\MiarmaApp\exception\storage\FileNotFoundException.class
 com\salesianostriana\dam\MiarmaApp\MiarmaAppApplication.class
 com\salesianostriana\dam\MiarmaApp\peticionSeguimiento\service\base\BaseService.class
+com\salesianostriana\dam\MiarmaApp\usuario\dto\GetPerfilUsuarioDto.class
 com\salesianostriana\dam\MiarmaApp\usuario\dto\GetUsuarioDto.class
 com\salesianostriana\dam\MiarmaApp\utils\MediaTypeUrlResource.class
 com\salesianostriana\dam\MiarmaApp\storage\config\StorageProperties.class
@@ -47,5 +48,6 @@ com\salesianostriana\dam\MiarmaApp\storage\service\impl\FileSystemStorageService
 com\salesianostriana\dam\MiarmaApp\peticionSeguimiento\dto\CreatePeticionSeguimientoDto$CreatePeticionSeguimientoDtoBuilder.class
 com\salesianostriana\dam\MiarmaApp\publicacion\service\base\BaseService.class
 com\salesianostriana\dam\MiarmaApp\security\PasswordEncoderConfig.class
+com\salesianostriana\dam\MiarmaApp\usuario\dto\GetPerfilUsuarioDto$GetPerfilUsuarioDtoBuilder.class
 com\salesianostriana\dam\MiarmaApp\usuario\dto\UsuarioDtoConverter.class
 com\salesianostriana\dam\MiarmaApp\publicacion\model\Publicacion$PublicacionBuilder.class

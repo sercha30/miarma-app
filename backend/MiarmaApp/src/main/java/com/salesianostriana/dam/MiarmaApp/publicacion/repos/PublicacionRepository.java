@@ -2,6 +2,7 @@ package com.salesianostriana.dam.MiarmaApp.publicacion.repos;
 
 import com.salesianostriana.dam.MiarmaApp.publicacion.model.Publicacion;
 import com.salesianostriana.dam.MiarmaApp.usuario.model.Usuario;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,5 +22,6 @@ public interface PublicacionRepository extends JpaRepository<Publicacion, UUID> 
             " and p.isPublic = true")
     List<Publicacion> findAllByNicknameAndPublic(@Param("nickname") String nickname);
 
+    @EntityGraph("grafoUsuarioPublicacion")
     List<Publicacion> findAllByPropietarioEquals(Usuario usuario);
 }

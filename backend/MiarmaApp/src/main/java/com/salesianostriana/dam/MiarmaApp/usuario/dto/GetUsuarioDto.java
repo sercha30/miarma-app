@@ -14,4 +14,5 @@ public class GetUsuarioDto {
     private String avatar;
     private String email;
     private String rol;
+    private boolean isPublic;
 }

@@ -53,6 +53,7 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
                     .email(nuevoUsuario.getEmail())
                     .nombre(nuevoUsuario.getNombre())
                     .rol(UserRole.USUARIO)
+                    .isPublic(nuevoUsuario.isPublic())
                     .build();
             return save(usuario);
         } else {
@@ -78,6 +79,7 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
                     .email(nuevoAdmin.getEmail())
                     .nombre(nuevoAdmin.getNombre())
                     .rol(UserRole.ADMIN)
+                    .isPublic(nuevoAdmin.isPublic())
                     .build();
             return save(usuario);
         } else {

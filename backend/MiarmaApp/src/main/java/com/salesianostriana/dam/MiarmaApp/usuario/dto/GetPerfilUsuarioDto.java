@@ -1,6 +1,6 @@
 package com.salesianostriana.dam.MiarmaApp.usuario.dto;
 
-import com.salesianostriana.dam.MiarmaApp.publicacion.model.Publicacion;
+import com.salesianostriana.dam.MiarmaApp.publicacion.dto.GetPublicacionDto;
 import lombok.*;
 
 import java.util.List;
@@ -18,5 +18,5 @@ public class GetPerfilUsuarioDto {
     private String email;
     private String avatar;
     private String rol;
-    private List<Publicacion> publicaciones;
+    private List<GetPublicacionDto> publicaciones;
 }

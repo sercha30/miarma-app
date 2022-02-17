@@ -74,7 +74,6 @@ public class PublicacionController {
             Publicacion publicacion = publicacionOptional.get();
 
             if(usuario.getId().equals(publicacion.getPropietario().getId())) {
-                usuario.removePublicacion(publicacion);
                 publicacionService.deletePublicacion(publicacion);
                 return ResponseEntity.noContent().build();
             } else {

@@ -17,6 +17,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+@NamedEntityGraphs(
+        @NamedEntityGraph(name = "grafoUsuarioPublicacion",
+            attributeNodes = {
+                @NamedAttributeNode("publicaciones")
+            })
+)
 @Entity
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
@@ -88,18 +94,6 @@ public class Usuario implements Serializable, UserDetails {
     @Builder.Default
     @OneToMany(mappedBy = "propietario")
     private List<Publicacion> publicaciones = new ArrayList<>();
-
-    //*********** HELPERS ***************
-
-    public void addPublicacion(Publicacion p) {
-        this.getPublicaciones().add(p);
-    }
-
-    public void removePublicacion(Publicacion p) {
-        this.getPublicaciones().remove(p);
-    }
-
-    //***********************************
 
     @Builder.Default
     @OneToMany(mappedBy = "solicitante")
