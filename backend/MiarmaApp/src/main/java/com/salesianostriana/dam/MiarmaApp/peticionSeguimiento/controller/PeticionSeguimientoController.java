@@ -53,4 +53,22 @@ public class PeticionSeguimientoController {
             return ResponseEntity.status(HttpStatus.CREATED).build();
         }
     }
+
+    @PostMapping("/decline/{id}")
+    public ResponseEntity<?> rechazarPeticion(@PathVariable UUID id,
+                                             @AuthenticationPrincipal Usuario usuario) {
+        Optional<PeticionSeguimiento> psOptional = psService.findById(id);
+
+        if(psOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            PeticionSeguimiento ps = psOptional.get();
+            usuario.removeSeguidor(ps.getSolicitante());
+            usuarioService.edit(usuario);
+            usuarioService.edit(ps.getSolicitante());
+            psService.delete(ps);
+
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+    }
 }
