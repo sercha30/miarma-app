@@ -101,9 +101,37 @@ public class Usuario implements Serializable, UserDetails {
     @OneToMany(mappedBy = "solicitante")
     private List<PeticionSeguimiento> solicitudesActivas = new ArrayList<>();
 
+    //************* HELPERS **************
+
+    public void addToActivas(PeticionSeguimiento ps) {
+        this.getSolicitudesActivas().add(ps);
+        ps.setSolicitante(this);
+    }
+
+    public void removeFromActivas(PeticionSeguimiento ps) {
+        ps.setSolicitante(null);
+        this.getSolicitudesActivas().remove(ps);
+    }
+
+    //************************************
+
     @Builder.Default
     @OneToMany(mappedBy = "solicitado")
     private List<PeticionSeguimiento> solicitudesPendientes = new ArrayList<>();
+
+    //************* HELPERS **************
+
+    public void addToPendientes(PeticionSeguimiento ps) {
+        this.getSolicitudesPendientes().add(ps);
+        ps.setSolicitado(this);
+    }
+
+    public void removeFromPendientes(PeticionSeguimiento ps) {
+        ps.setSolicitado(null);
+        this.getSolicitudesPendientes().remove(ps);
+    }
+
+    //************************************
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

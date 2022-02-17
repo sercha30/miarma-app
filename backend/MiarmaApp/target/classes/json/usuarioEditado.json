@@ -1,0 +1,10 @@
+{
+    "nick":"pepita95",
+    "email":"pepita@email.com",
+    "nombre":"Pepa",
+    "apellidos":"Chacón Rodríguez",
+    "fechaNacimiento":"15/09/1996",
+    "public":false,
+    "password":"1234",
+    "password2":"1234"
+}

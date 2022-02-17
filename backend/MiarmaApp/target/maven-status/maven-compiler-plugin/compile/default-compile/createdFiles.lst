@@ -15,6 +15,7 @@ com\salesianostriana\dam\MiarmaApp\usuario\controller\UsuarioController.class
 com\salesianostriana\dam\MiarmaApp\usuario\service\UsuarioService.class
 com\salesianostriana\dam\MiarmaApp\publicacion\dto\CreatePublicacionDto.class
 com\salesianostriana\dam\MiarmaApp\security\jwt\JwtAuthorizationFilter.class
+com\salesianostriana\dam\MiarmaApp\peticionSeguimiento\dto\PeticionSeguimientoDtoConverter.class
 com\salesianostriana\dam\MiarmaApp\security\jwt\JwtAuthenticationEntryPoint.class
 com\salesianostriana\dam\MiarmaApp\publicacion\dto\CreatePublicacionDto$CreatePublicacionDtoBuilder.class
 com\salesianostriana\dam\MiarmaApp\peticionSeguimiento\dto\CreatePeticionSeguimientoDto.class
@@ -22,15 +23,18 @@ com\salesianostriana\dam\MiarmaApp\publicacion\repos\PublicacionRepository.class
 com\salesianostriana\dam\MiarmaApp\peticionSeguimiento\controller\PeticionSeguimientoController.class
 com\salesianostriana\dam\MiarmaApp\usuario\dto\CreateUsuarioDto$CreateUsuarioDtoBuilder.class
 com\salesianostriana\dam\MiarmaApp\usuario\model\Usuario.class
+com\salesianostriana\dam\MiarmaApp\exception\peticionSeguimiento\AlreadyFollowedUserException.class
 com\salesianostriana\dam\MiarmaApp\exception\storage\FileNotFoundException.class
 com\salesianostriana\dam\MiarmaApp\MiarmaAppApplication.class
 com\salesianostriana\dam\MiarmaApp\peticionSeguimiento\service\base\BaseService.class
 com\salesianostriana\dam\MiarmaApp\usuario\dto\GetPerfilUsuarioDto.class
+com\salesianostriana\dam\MiarmaApp\peticionSeguimiento\dto\GetPeticionSeguimientoDto.class
 com\salesianostriana\dam\MiarmaApp\usuario\dto\GetUsuarioDto.class
 com\salesianostriana\dam\MiarmaApp\utils\MediaTypeUrlResource.class
 com\salesianostriana\dam\MiarmaApp\storage\config\StorageProperties.class
 com\salesianostriana\dam\MiarmaApp\peticionSeguimiento\model\PeticionSeguimiento$PeticionSeguimientoBuilder.class
 com\salesianostriana\dam\MiarmaApp\security\jwt\JwtUserResponse$JwtUserResponseBuilder.class
+com\salesianostriana\dam\MiarmaApp\peticionSeguimiento\dto\GetPeticionSeguimientoDto$GetPeticionSeguimientoDtoBuilder.class
 com\salesianostriana\dam\MiarmaApp\peticionSeguimiento\service\PeticionSeguimientoService.class
 com\salesianostriana\dam\MiarmaApp\utils\MultipartImage.class
 com\salesianostriana\dam\MiarmaApp\usuario\dto\CreateUsuarioDto.class

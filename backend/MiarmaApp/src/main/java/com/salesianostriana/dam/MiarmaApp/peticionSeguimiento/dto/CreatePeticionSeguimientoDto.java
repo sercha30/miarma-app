@@ -7,5 +7,5 @@ import lombok.*;
 @Builder
 public class CreatePeticionSeguimientoDto {
 
-    private String mensaje;
+    private String nick;
 }
