@@ -43,6 +43,8 @@ public class Usuario implements Serializable, UserDetails {
     )
     private UUID id;
 
+    @NaturalId
+    @Column(nullable = false, updatable = false)
     private String nick;
 
     private String password;

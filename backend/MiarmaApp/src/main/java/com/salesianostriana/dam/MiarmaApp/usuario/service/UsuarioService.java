@@ -35,6 +35,11 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
                 .orElseThrow(() -> new UsernameNotFoundException(email + " no encontrado."));
     }
 
+    public Usuario findUsuarioByNick(String nick) {
+        return repositorio.findFirstByNick(nick)
+                .orElseThrow(() -> new UsernameNotFoundException(nick + " no encontrado"));
+    }
+
     public Usuario saveUsuario(CreateUsuarioDto nuevoUsuario, MultipartFile avatar) throws Exception {
         if(nuevoUsuario.getPassword().contentEquals(nuevoUsuario.getPassword2())){
             MultipartFile thumbnail = resizeImage(avatar);
@@ -85,11 +90,6 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
         } else {
             return null;
         }
-    }
-
-    public Usuario findUsuarioByNick(String nick) {
-        return repositorio.findFirstByNick(nick)
-                .orElseThrow(() -> new UsernameNotFoundException(nick + " no encontrado"));
     }
 
     public Usuario editUsuario(CreateUsuarioDto nuevoUsuario, MultipartFile file, Usuario usuarioAnt) throws Exception {
