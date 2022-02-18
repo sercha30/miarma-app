@@ -5,7 +5,9 @@ import 'package:google_fonts/google_fonts.dart';
 class CustomStyles {
   //TextStyles
   static TextStyle get loginTitleText => GoogleFonts.getFont('Lobster Two',
-      fontSize: 42, fontWeight: FontWeight.bold);
+      fontSize: 42, fontWeight: FontWeight.bold, color: Colors.black);
+  static TextStyle get appBarTitleText => GoogleFonts.getFont('Lobster Two',
+      fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black);
   static TextStyle get secondaryText => GoogleFonts.getFont('Nunito',
       fontSize: 14, fontWeight: FontWeight.bold, color: secondaryTextColor);
   static TextStyle get secondaryLinkText => GoogleFonts.getFont('Nunito',
