@@ -1,6 +1,7 @@
 package com.salesianostriana.dam.MiarmaApp.peticionSeguimiento.service;
 
 import com.salesianostriana.dam.MiarmaApp.errors.exception.peticionSeguimiento.AlreadyFollowedUserException;
+import com.salesianostriana.dam.MiarmaApp.errors.exception.peticionSeguimiento.SelfFollowException;
 import com.salesianostriana.dam.MiarmaApp.peticionSeguimiento.model.PeticionSeguimiento;
 import com.salesianostriana.dam.MiarmaApp.peticionSeguimiento.repos.PeticionSeguimientoRepository;
 import com.salesianostriana.dam.MiarmaApp.publicacion.service.base.BaseService;
@@ -27,6 +28,10 @@ public class PeticionSeguimientoService extends BaseService<PeticionSeguimiento,
 
         if(usuarioSolicitado == null) {
             throw new UsernameNotFoundException("Usuario no encontrado");
+        }
+
+        if(usuarioSolicitado.getId().equals(usuario.getId())){
+            throw new SelfFollowException();
         }
 
         if(usuario.getSeguidos().contains(usuarioSolicitado)) {
