@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_miarma_app/screens/login_screen.dart';
-import 'package:flutter_miarma_app/screens/menu_screen.dart';
-import 'package:flutter_miarma_app/screens/register_screen.dart';
+import 'ui/login_screen.dart';
+import 'ui/menu_screen.dart';
+import 'ui/register_screen.dart';
 
 void main() {
   runApp(const MyApp());

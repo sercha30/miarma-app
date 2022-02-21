@@ -38,6 +38,7 @@ dependencies:
   google_fonts: 2.2.0
   http: ^0.13.4
   sign_button: ^2.0.2
+  rxdart: ^0.27.3
 
 dev_dependencies:
   flutter_test:
