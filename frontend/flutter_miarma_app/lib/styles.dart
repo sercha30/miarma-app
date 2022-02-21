@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,6 +13,14 @@ class CustomStyles {
       fontSize: 14, fontWeight: FontWeight.bold, color: Colors.blue);
   static TextStyle get registerSubText => GoogleFonts.getFont('Nunito',
       fontSize: 22, fontWeight: FontWeight.bold, color: Colors.grey);
+  static TextStyle get usernameProfileText => GoogleFonts.getFont('Nunito',
+      fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black);
+  static TextStyle get countNumberText => GoogleFonts.getFont('Nunito',
+      fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black);
+  static TextStyle get userProfileSubText =>
+      GoogleFonts.getFont('Nunito', fontSize: 14, color: Colors.black);
+  static TextStyle get userProfileNameText => GoogleFonts.getFont('Nunito',
+      fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black);
 
   //Paddings, margins...
   static const double bodyPadding = 20.0;
