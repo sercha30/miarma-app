@@ -18,6 +18,8 @@ import io.github.techgnious.dto.ResizeResolution;
 import io.github.techgnious.dto.VideoFormats;
 import lombok.RequiredArgsConstructor;
 import org.imgscalr.Scalr;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -119,8 +121,8 @@ public class PublicacionService extends BaseService<Publicacion, UUID, Publicaci
         }
     }
 
-    public List<Publicacion> findAllPublicacionesPublicas() {
-        List<Publicacion> publicaciones = publicacionRepository.findAllByPublicIsTrue();
+    public Page<Publicacion> findAllPublicacionesPublicas(Pageable pageable) {
+        Page<Publicacion> publicaciones = publicacionRepository.findAllByPublicIsTrue(pageable);
 
         if(publicaciones.isEmpty()) {
             throw new ListEntityNotFoundException(Publicacion.class);

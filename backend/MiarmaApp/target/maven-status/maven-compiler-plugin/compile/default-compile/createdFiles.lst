@@ -56,6 +56,7 @@ com\salesianostriana\dam\MiarmaApp\storage\service\StorageService.class
 com\salesianostriana\dam\MiarmaApp\utils\MultipartImage$MultipartImageBuilder.class
 com\salesianostriana\dam\MiarmaApp\errors\exception\entity\EntityNotFoundException.class
 com\salesianostriana\dam\MiarmaApp\publicacion\dto\PublicacionDtoConverter.class
+com\salesianostriana\dam\MiarmaApp\pagination\PaginationUtilsLinks.class
 com\salesianostriana\dam\MiarmaApp\usuario\dto\GetUsuarioDto$GetUsuarioDtoBuilder.class
 com\salesianostriana\dam\MiarmaApp\errors\model\ApiValidationSubError$ApiValidationSubErrorBuilder.class
 com\salesianostriana\dam\MiarmaApp\security\LoginDto.class

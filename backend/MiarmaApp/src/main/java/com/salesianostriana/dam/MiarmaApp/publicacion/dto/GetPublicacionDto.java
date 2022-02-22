@@ -22,6 +22,8 @@ public class GetPublicacionDto {
 
     private String nickUsuario;
 
+    private String avatar;
+
     private boolean isPublic;
 
     private LocalDateTime fechaPublicacion;

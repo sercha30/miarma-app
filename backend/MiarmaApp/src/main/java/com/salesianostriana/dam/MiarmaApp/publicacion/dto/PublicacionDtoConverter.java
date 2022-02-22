@@ -13,6 +13,7 @@ public class PublicacionDtoConverter {
                 .contenido(publicacion.getContenido())
                 .media(publicacion.getMedia())
                 .nickUsuario(publicacion.getPropietario().getNick())
+                .avatar(publicacion.getPropietario().getAvatar())
                 .fechaPublicacion(publicacion.getFechaPublicacion())
                 .isPublic(publicacion.isPublic())
                 .build();

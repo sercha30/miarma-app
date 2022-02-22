@@ -13,10 +13,6 @@ public abstract class BaseService<T,ID,R extends JpaRepository<T,ID>> {
     @Autowired
     protected R repositorio;
 
-    public List<T> findAll() {
-        return repositorio.findAll();
-    }
-
     public Page<T> findAll(Pageable pageable) {
         return repositorio.findAll(pageable);
     }

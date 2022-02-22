@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.MiarmaApp.publicacion.controller;
 
+import com.salesianostriana.dam.MiarmaApp.pagination.PaginationUtilsLinks;
 import com.salesianostriana.dam.MiarmaApp.publicacion.dto.CreatePublicacionDto;
 import com.salesianostriana.dam.MiarmaApp.publicacion.dto.GetPublicacionDto;
 import com.salesianostriana.dam.MiarmaApp.publicacion.dto.PublicacionDtoConverter;
@@ -8,12 +9,17 @@ import com.salesianostriana.dam.MiarmaApp.publicacion.service.PublicacionService
 import com.salesianostriana.dam.MiarmaApp.usuario.model.Usuario;
 import com.salesianostriana.dam.MiarmaApp.usuario.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,6 +33,7 @@ public class PublicacionController {
     private final PublicacionService publicacionService;
     private final UsuarioService usuarioService;
     private final PublicacionDtoConverter publicacionDtoConverter;
+    private final PaginationUtilsLinks paginationUtilsLinks;
 
     @PostMapping("/")
     public ResponseEntity<GetPublicacionDto> nuevaPublicacion(@RequestPart("post")CreatePublicacionDto nuevaPublicacion,
@@ -60,11 +67,16 @@ public class PublicacionController {
     }
 
     @GetMapping("/public")
-    public ResponseEntity<List<GetPublicacionDto>> getAllPublicacionesPublicas() {
-        List<Publicacion> publicaciones = publicacionService.findAllPublicacionesPublicas();
+    public ResponseEntity<?> getAllPublicacionesPublicas(@PageableDefault() Pageable pageable,
+                                                         HttpServletRequest request) {
+        Page<Publicacion> publicaciones = publicacionService.findAllPublicacionesPublicas(pageable);
 
-        return ResponseEntity.ok().body(
-                publicaciones.stream()
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                .fromHttpUrl(request.getRequestURL().toString());
+
+        return ResponseEntity.ok()
+                .header("link", paginationUtilsLinks.createLinkHeader(publicaciones, uriBuilder))
+                .body(publicaciones.stream()
                         .map(publicacionDtoConverter::convertPublicacionToGetPublicacionDto)
                         .collect(Collectors.toList())
         );
