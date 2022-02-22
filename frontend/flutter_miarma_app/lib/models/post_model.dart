@@ -4,6 +4,7 @@ class Post {
   String? contenido;
   String? media;
   String? nickUsuario;
+  String? avatar;
   String? fechaPublicacion;
   bool? public;
 
@@ -13,6 +14,7 @@ class Post {
     this.contenido,
     this.media,
     this.nickUsuario,
+    this.avatar,
     this.fechaPublicacion,
     this.public,
   });
@@ -22,6 +24,7 @@ class Post {
     contenido = json['contenido']?.toString();
     media = json['media']?.toString();
     nickUsuario = json['nickUsuario']?.toString();
+    avatar = json['avatar']?.toString();
     fechaPublicacion = json['fechaPublicacion']?.toString();
     public = json['public'];
   }
@@ -32,6 +35,7 @@ class Post {
     data['contenido'] = contenido;
     data['media'] = media;
     data['nickUsuario'] = nickUsuario;
+    data['avatar'] = avatar;
     data['fechaPublicacion'] = fechaPublicacion;
     data['public'] = public;
     return data;
