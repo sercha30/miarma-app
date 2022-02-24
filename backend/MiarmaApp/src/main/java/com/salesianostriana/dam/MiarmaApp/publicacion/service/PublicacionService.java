@@ -4,12 +4,12 @@ import com.salesianostriana.dam.MiarmaApp.errors.exception.entity.ListEntityNotF
 import com.salesianostriana.dam.MiarmaApp.errors.exception.entity.SingleEntityNotFoundException;
 import com.salesianostriana.dam.MiarmaApp.errors.exception.general.ActionNotAvailableException;
 import com.salesianostriana.dam.MiarmaApp.errors.exception.storage.MediaTypeNotValidException;
+import com.salesianostriana.dam.MiarmaApp.general.BaseService;
 import com.salesianostriana.dam.MiarmaApp.publicacion.dto.CreatePublicacionDto;
 import com.salesianostriana.dam.MiarmaApp.publicacion.dto.GetPublicacionDto;
 import com.salesianostriana.dam.MiarmaApp.publicacion.dto.PublicacionDtoConverter;
 import com.salesianostriana.dam.MiarmaApp.publicacion.model.Publicacion;
 import com.salesianostriana.dam.MiarmaApp.publicacion.repos.PublicacionRepository;
-import com.salesianostriana.dam.MiarmaApp.publicacion.service.base.BaseService;
 import com.salesianostriana.dam.MiarmaApp.storage.service.StorageService;
 import com.salesianostriana.dam.MiarmaApp.usuario.model.Usuario;
 import com.salesianostriana.dam.MiarmaApp.utils.MultipartImage;

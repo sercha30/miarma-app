@@ -1,11 +1,11 @@
 package com.salesianostriana.dam.MiarmaApp.usuario.service;
 
+import com.salesianostriana.dam.MiarmaApp.general.BaseService;
 import com.salesianostriana.dam.MiarmaApp.storage.service.StorageService;
 import com.salesianostriana.dam.MiarmaApp.usuario.dto.CreateUsuarioDto;
 import com.salesianostriana.dam.MiarmaApp.usuario.model.UserRole;
 import com.salesianostriana.dam.MiarmaApp.usuario.model.Usuario;
 import com.salesianostriana.dam.MiarmaApp.usuario.repos.UsuarioRepository;
-import com.salesianostriana.dam.MiarmaApp.usuario.service.base.BaseService;
 import com.salesianostriana.dam.MiarmaApp.utils.MultipartImage;
 import lombok.RequiredArgsConstructor;
 import net.coobird.thumbnailator.Thumbnails;

@@ -2,9 +2,9 @@ package com.salesianostriana.dam.MiarmaApp.peticionSeguimiento.service;
 
 import com.salesianostriana.dam.MiarmaApp.errors.exception.peticionSeguimiento.AlreadyFollowedUserException;
 import com.salesianostriana.dam.MiarmaApp.errors.exception.peticionSeguimiento.SelfFollowException;
+import com.salesianostriana.dam.MiarmaApp.general.BaseService;
 import com.salesianostriana.dam.MiarmaApp.peticionSeguimiento.model.PeticionSeguimiento;
 import com.salesianostriana.dam.MiarmaApp.peticionSeguimiento.repos.PeticionSeguimientoRepository;
-import com.salesianostriana.dam.MiarmaApp.publicacion.service.base.BaseService;
 import com.salesianostriana.dam.MiarmaApp.usuario.model.Usuario;
 import com.salesianostriana.dam.MiarmaApp.usuario.service.UsuarioService;
 import lombok.RequiredArgsConstructor;

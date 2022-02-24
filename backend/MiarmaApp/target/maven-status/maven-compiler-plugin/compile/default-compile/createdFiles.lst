@@ -41,6 +41,7 @@ com\salesianostriana\dam\MiarmaApp\usuario\dto\GetPerfilUsuarioDto.class
 com\salesianostriana\dam\MiarmaApp\errors\exception\peticionSeguimiento\SelfFollowException.class
 com\salesianostriana\dam\MiarmaApp\peticionSeguimiento\dto\GetPeticionSeguimientoDto.class
 com\salesianostriana\dam\MiarmaApp\usuario\dto\GetUsuarioDto.class
+com\salesianostriana\dam\MiarmaApp\storage\controller\FileController.class
 com\salesianostriana\dam\MiarmaApp\utils\MediaTypeUrlResource.class
 com\salesianostriana\dam\MiarmaApp\storage\config\StorageProperties.class
 com\salesianostriana\dam\MiarmaApp\peticionSeguimiento\model\PeticionSeguimiento$PeticionSeguimientoBuilder.class

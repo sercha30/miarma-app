@@ -1,4 +1,4 @@
-package com.salesianostriana.dam.MiarmaApp.publicacion.service.base;
+package com.salesianostriana.dam.MiarmaApp.general;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +12,10 @@ public abstract class BaseService<T,ID,R extends JpaRepository<T,ID>> {
 
     @Autowired
     protected R repositorio;
+
+    public List<T> findAll() {
+        return repositorio.findAll();
+    }
 
     public Page<T> findAll(Pageable pageable) {
         return repositorio.findAll(pageable);

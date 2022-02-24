@@ -134,9 +134,10 @@ class _HomeScreenState extends State<HomeScreen> {
           SizedBox(
             height: 100,
             child: ListView(
+                scrollDirection: Axis.horizontal,
                 children: List.generate(20, (index) {
-              return _createStories();
-            })),
+                  return _createStories();
+                })),
           ),
           SizedBox(
               height: 500,
@@ -169,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
                       child: Image.network(
-                        post.avatar!,
+                        'http://10.0.2.2' + post.avatar!.substring(16),
                         width: 30,
                         fit: BoxFit.cover,
                       ),
@@ -182,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-        Image.network(post.media!),
+        Image.network('http://10.0.2.2' + post.media!.substring(16)),
         Padding(
           padding: const EdgeInsets.all(6.0),
           child: Row(
