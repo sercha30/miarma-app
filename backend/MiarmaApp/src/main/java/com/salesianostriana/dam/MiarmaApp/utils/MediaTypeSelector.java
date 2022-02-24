@@ -4,11 +4,13 @@ import com.salesianostriana.dam.MiarmaApp.errors.exception.storage.MediaTypeNotV
 import com.salesianostriana.dam.MiarmaApp.media.ImageScaler;
 import com.salesianostriana.dam.MiarmaApp.media.VideoCompressor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Objects;
 
 @RequiredArgsConstructor
+@Component
 public class MediaTypeSelector {
 
     private final ImageScaler imageScaler;

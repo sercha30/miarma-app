@@ -11,7 +11,8 @@ public class PublicacionDtoConverter {
                 .id(publicacion.getId())
                 .titulo(publicacion.getTitulo())
                 .contenido(publicacion.getContenido())
-                .media(publicacion.getMedia())
+                .originalMedia(publicacion.getOriginalMedia())
+                .transformedMedia(publicacion.getTransformedMedia())
                 .nickUsuario(publicacion.getPropietario().getNick())
                 .avatar(publicacion.getPropietario().getAvatar())
                 .fechaPublicacion(publicacion.getFechaPublicacion())
@@ -21,14 +22,16 @@ public class PublicacionDtoConverter {
 
     public Publicacion convertCreatePublicacionDtoToPublicacion(CreatePublicacionDto publicacionDto,
                                                                 Publicacion publicacion,
-                                                                String mediaUri) {
+                                                                String originalMediaUri,
+                                                                String transformedMediaUri) {
         return Publicacion.builder()
                 .id(publicacion.getId())
                 .titulo(publicacionDto.getTitulo())
                 .contenido(publicacionDto.getContenido())
                 .fechaPublicacion(publicacion.getFechaPublicacion())
                 .isPublic(publicacionDto.isPublic())
-                .media(mediaUri)
+                .originalMedia(originalMediaUri)
+                .transformedMedia(transformedMediaUri)
                 .propietario(publicacion.getPropietario())
                 .build();
     }

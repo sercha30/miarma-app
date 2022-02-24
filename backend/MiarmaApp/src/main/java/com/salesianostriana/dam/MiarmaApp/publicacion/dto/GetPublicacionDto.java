@@ -18,7 +18,9 @@ public class GetPublicacionDto {
     @Lob
     private String contenido;
 
-    private String media;
+    private String originalMedia;
+
+    private String transformedMedia;
 
     private String nickUsuario;
 

@@ -4,21 +4,23 @@ import com.salesianostriana.dam.MiarmaApp.utils.MultipartImage;
 import net.coobird.thumbnailator.Thumbnails;
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 
+@Component
 public class ImageScaler {
 
-    @Value("image.avatar.width:128")
+    @Value("${image.avatar.width:128}")
     private int avatarWidth;
 
-    @Value("image.avatar.height:128")
+    @Value("${image.avatar.height:128}")
     private int avatarHeight;
 
-    @Value("image.post.size:1024")
+    @Value("${image.post.size:1024}")
     private int postImageSize;
 
     public MultipartFile resizeAvatarImage(MultipartFile originalImage) throws Exception {

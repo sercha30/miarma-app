@@ -35,7 +35,9 @@ public class Publicacion implements Serializable {
     @Lob
     private String contenido;
 
-    private String media;
+    private String originalMedia;
+
+    private String transformedMedia;
 
     private boolean isPublic;
 

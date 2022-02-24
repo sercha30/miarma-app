@@ -5,6 +5,7 @@ com\salesianostriana\dam\MiarmaApp\errors\exception\general\ActionNotAvailableEx
 com\salesianostriana\dam\MiarmaApp\security\jwt\JwtAccessDeniedHandler.class
 com\salesianostriana\dam\MiarmaApp\errors\model\ApiValidationSubError.class
 com\salesianostriana\dam\MiarmaApp\publicacion\controller\PublicacionController.class
+com\salesianostriana\dam\MiarmaApp\media\ImageScaler.class
 com\salesianostriana\dam\MiarmaApp\peticionSeguimiento\model\PeticionSeguimiento.class
 com\salesianostriana\dam\MiarmaApp\publicacion\dto\GetPublicacionDto.class
 com\salesianostriana\dam\MiarmaApp\errors\exception\storage\FileNotFoundException.class
@@ -14,7 +15,6 @@ com\salesianostriana\dam\MiarmaApp\errors\exception\storage\MediaTypeNotValidExc
 com\salesianostriana\dam\MiarmaApp\errors\GlobalRestControllerAdvice.class
 com\salesianostriana\dam\MiarmaApp\security\SecurityConfig.class
 com\salesianostriana\dam\MiarmaApp\security\AuthenticationController.class
-com\salesianostriana\dam\MiarmaApp\usuario\service\base\BaseService.class
 com\salesianostriana\dam\MiarmaApp\security\jwt\JwtUserResponse.class
 com\salesianostriana\dam\MiarmaApp\usuario\model\Usuario$UsuarioBuilder.class
 com\salesianostriana\dam\MiarmaApp\usuario\controller\UsuarioController.class
@@ -23,6 +23,7 @@ com\salesianostriana\dam\MiarmaApp\errors\model\ApiError$ApiErrorBuilder.class
 com\salesianostriana\dam\MiarmaApp\publicacion\dto\CreatePublicacionDto.class
 com\salesianostriana\dam\MiarmaApp\security\jwt\JwtAuthorizationFilter.class
 com\salesianostriana\dam\MiarmaApp\errors\model\ApiError$ApiErrorBuilderImpl.class
+com\salesianostriana\dam\MiarmaApp\general\BaseService.class
 com\salesianostriana\dam\MiarmaApp\peticionSeguimiento\dto\PeticionSeguimientoDtoConverter.class
 com\salesianostriana\dam\MiarmaApp\security\jwt\JwtAuthenticationEntryPoint.class
 com\salesianostriana\dam\MiarmaApp\publicacion\dto\CreatePublicacionDto$CreatePublicacionDtoBuilder.class
@@ -34,9 +35,9 @@ com\salesianostriana\dam\MiarmaApp\usuario\model\Usuario.class
 com\salesianostriana\dam\MiarmaApp\errors\exception\entity\ListEntityNotFoundException.class
 com\salesianostriana\dam\MiarmaApp\errors\model\MiDefaultErrorAttributes.class
 com\salesianostriana\dam\MiarmaApp\errors\model\ApiSubError.class
+com\salesianostriana\dam\MiarmaApp\media\VideoCompressor.class
 com\salesianostriana\dam\MiarmaApp\errors\model\ApiSubError$ApiSubErrorBuilderImpl.class
 com\salesianostriana\dam\MiarmaApp\MiarmaAppApplication.class
-com\salesianostriana\dam\MiarmaApp\peticionSeguimiento\service\base\BaseService.class
 com\salesianostriana\dam\MiarmaApp\usuario\dto\GetPerfilUsuarioDto.class
 com\salesianostriana\dam\MiarmaApp\errors\exception\peticionSeguimiento\SelfFollowException.class
 com\salesianostriana\dam\MiarmaApp\peticionSeguimiento\dto\GetPeticionSeguimientoDto.class
@@ -61,6 +62,7 @@ com\salesianostriana\dam\MiarmaApp\pagination\PaginationUtilsLinks.class
 com\salesianostriana\dam\MiarmaApp\usuario\dto\GetUsuarioDto$GetUsuarioDtoBuilder.class
 com\salesianostriana\dam\MiarmaApp\errors\model\ApiValidationSubError$ApiValidationSubErrorBuilder.class
 com\salesianostriana\dam\MiarmaApp\security\LoginDto.class
+com\salesianostriana\dam\MiarmaApp\utils\MediaTypeSelector.class
 com\salesianostriana\dam\MiarmaApp\publicacion\service\PublicacionService.class
 com\salesianostriana\dam\MiarmaApp\errors\exception\peticionSeguimiento\AlreadyFollowedUserException.class
 com\salesianostriana\dam\MiarmaApp\publicacion\model\Publicacion.class
@@ -68,7 +70,6 @@ com\salesianostriana\dam\MiarmaApp\errors\exception\entity\SingleEntityNotFoundE
 com\salesianostriana\dam\MiarmaApp\errors\model\ApiError.class
 com\salesianostriana\dam\MiarmaApp\storage\service\impl\FileSystemStorageService.class
 com\salesianostriana\dam\MiarmaApp\peticionSeguimiento\dto\CreatePeticionSeguimientoDto$CreatePeticionSeguimientoDtoBuilder.class
-com\salesianostriana\dam\MiarmaApp\publicacion\service\base\BaseService.class
 com\salesianostriana\dam\MiarmaApp\security\PasswordEncoderConfig.class
 com\salesianostriana\dam\MiarmaApp\usuario\dto\GetPerfilUsuarioDto$GetPerfilUsuarioDtoBuilder.class
 com\salesianostriana\dam\MiarmaApp\usuario\dto\UsuarioDtoConverter.class

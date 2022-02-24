@@ -4,7 +4,6 @@ import com.salesianostriana.dam.MiarmaApp.errors.exception.entity.ListEntityNotF
 import com.salesianostriana.dam.MiarmaApp.errors.exception.entity.SingleEntityNotFoundException;
 import com.salesianostriana.dam.MiarmaApp.errors.exception.general.ActionNotAvailableException;
 import com.salesianostriana.dam.MiarmaApp.general.BaseService;
-import com.salesianostriana.dam.MiarmaApp.media.ImageScaler;
 import com.salesianostriana.dam.MiarmaApp.publicacion.dto.CreatePublicacionDto;
 import com.salesianostriana.dam.MiarmaApp.publicacion.dto.GetPublicacionDto;
 import com.salesianostriana.dam.MiarmaApp.publicacion.dto.PublicacionDtoConverter;
@@ -31,7 +30,6 @@ public class PublicacionService extends BaseService<Publicacion, UUID, Publicaci
     private final StorageService storageService;
     private final PublicacionRepository publicacionRepository;
     private final PublicacionDtoConverter dtoConverter;
-    private final ImageScaler imageScaler;
     private final MediaTypeSelector mediaTypeSelector;
     private MultipartFile file;
 
@@ -39,18 +37,24 @@ public class PublicacionService extends BaseService<Publicacion, UUID, Publicaci
                                        MultipartFile media) throws Exception {
         file = mediaTypeSelector.selectMediaType(media);
 
-        storageService.store(media);
-        String filename = storageService.store(file);
+        String originalFilename = storageService.store(media);
+        String scaledFilename = storageService.store(file);
 
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+        String originalUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/download/")
-                .path(filename)
+                .path(originalFilename)
+                .toUriString();
+
+        String scaledUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/download/")
+                .path(scaledFilename)
                 .toUriString();
 
         Publicacion publicacion = Publicacion.builder()
                 .contenido(nuevaPublicacion.getContenido())
                 .titulo(nuevaPublicacion.getTitulo())
-                .media(uri)
+                .originalMedia(originalUri)
+                .transformedMedia(scaledUri)
                 .isPublic(nuevaPublicacion.isPublic())
                 .propietario(usuario)
                 .build();
@@ -70,16 +74,21 @@ public class PublicacionService extends BaseService<Publicacion, UUID, Publicaci
             if(usuario.getId().equals(publicacionAnt.getPropietario().getId())) {
                 file = mediaTypeSelector.selectMediaType(media);
 
-                storageService.store(media);
-                String filename = storageService.store(file);
+                String originalFilename = storageService.store(media);
+                String scaledFilename = storageService.store(file);
 
-                String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                String originalUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                         .path("/download/")
-                        .path(filename)
+                        .path(originalFilename)
+                        .toUriString();
+
+                String scaledUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                        .path("/download/")
+                        .path(scaledFilename)
                         .toUriString();
 
                 Publicacion publicacionEditada = dtoConverter
-                        .convertCreatePublicacionDtoToPublicacion(publicacion, publicacionAnt, uri);
+                        .convertCreatePublicacionDtoToPublicacion(publicacion, publicacionAnt, scaledUri, originalUri);
 
                 edit(publicacionEditada);
 
@@ -89,7 +98,8 @@ public class PublicacionService extends BaseService<Publicacion, UUID, Publicaci
                         .titulo(publicacion.getTitulo())
                         .nickUsuario(publicacionAnt.getPropietario().getNick())
                         .fechaPublicacion(publicacionAnt.getFechaPublicacion())
-                        .media(uri)
+                        .originalMedia(originalUri)
+                        .transformedMedia(scaledUri)
                         .isPublic(publicacion.isPublic())
                         .build();
             } else {
@@ -107,7 +117,7 @@ public class PublicacionService extends BaseService<Publicacion, UUID, Publicaci
             Publicacion publicacion = publicacionOptional.get();
 
             if (usuario.getId().equals(publicacion.getPropietario().getId())) {
-                storageService.deleteFile(publicacion.getMedia());
+                storageService.deleteFile(publicacion.getTransformedMedia());
                 delete(publicacion);
             } else {
                 throw new ActionNotAvailableException();
