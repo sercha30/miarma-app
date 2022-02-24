@@ -1,14 +1,13 @@
 package com.salesianostriana.dam.MiarmaApp.usuario.service;
 
 import com.salesianostriana.dam.MiarmaApp.general.BaseService;
+import com.salesianostriana.dam.MiarmaApp.media.ImageScaler;
 import com.salesianostriana.dam.MiarmaApp.storage.service.StorageService;
 import com.salesianostriana.dam.MiarmaApp.usuario.dto.CreateUsuarioDto;
 import com.salesianostriana.dam.MiarmaApp.usuario.model.UserRole;
 import com.salesianostriana.dam.MiarmaApp.usuario.model.Usuario;
 import com.salesianostriana.dam.MiarmaApp.usuario.repos.UsuarioRepository;
-import com.salesianostriana.dam.MiarmaApp.utils.MultipartImage;
 import lombok.RequiredArgsConstructor;
-import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,9 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.util.UUID;
 
 @Service("userDetailsService")
@@ -28,6 +24,7 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
 
     private final PasswordEncoder passwordEncoder;
     private final StorageService storageService;
+    private final ImageScaler imageScaler;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -42,7 +39,7 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
 
     public Usuario saveUsuario(CreateUsuarioDto nuevoUsuario, MultipartFile avatar) throws Exception {
         if(nuevoUsuario.getPassword().contentEquals(nuevoUsuario.getPassword2())){
-            MultipartFile thumbnail = resizeImage(avatar);
+            MultipartFile thumbnail = imageScaler.resizeAvatarImage(avatar);
             String filename = storageService.store(thumbnail);
 
             String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -68,7 +65,7 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
 
     public Usuario saveAdmin(CreateUsuarioDto nuevoAdmin, MultipartFile avatar) throws Exception{
         if(nuevoAdmin.getPassword().contentEquals(nuevoAdmin.getPassword2())){
-            MultipartFile thumbnail = resizeImage(avatar);
+            MultipartFile thumbnail = imageScaler.resizeAvatarImage(avatar);
             String filename = storageService.store(thumbnail);
 
             String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -93,7 +90,7 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
     }
 
     public Usuario editUsuario(CreateUsuarioDto nuevoUsuario, MultipartFile file, Usuario usuarioAnt) throws Exception {
-        MultipartFile thumbnail = resizeImage(file);
+        MultipartFile thumbnail = imageScaler.resizeAvatarImage(file);
         String filename = storageService.store(thumbnail);
 
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -113,25 +110,5 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
                 .build();
 
         return edit(usuario);
-    }
-
-    private MultipartFile resizeImage(MultipartFile originalImage) throws Exception {
-        BufferedImage avatarImage = ImageIO.read(originalImage.getInputStream());
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-        Thumbnails.of(avatarImage)
-                .size(128, 128)
-                .outputFormat("png")
-                .outputQuality(1)
-                .toOutputStream(outputStream);
-
-        byte[] data = outputStream.toByteArray();
-
-        return MultipartImage.builder()
-                .fieldName(originalImage.getName())
-                .fileName(originalImage.getOriginalFilename())
-                .contentType(originalImage.getContentType())
-                .bytes(data)
-                .build();
     }
 }

@@ -3,8 +3,8 @@ package com.salesianostriana.dam.MiarmaApp.publicacion.service;
 import com.salesianostriana.dam.MiarmaApp.errors.exception.entity.ListEntityNotFoundException;
 import com.salesianostriana.dam.MiarmaApp.errors.exception.entity.SingleEntityNotFoundException;
 import com.salesianostriana.dam.MiarmaApp.errors.exception.general.ActionNotAvailableException;
-import com.salesianostriana.dam.MiarmaApp.errors.exception.storage.MediaTypeNotValidException;
 import com.salesianostriana.dam.MiarmaApp.general.BaseService;
+import com.salesianostriana.dam.MiarmaApp.media.ImageScaler;
 import com.salesianostriana.dam.MiarmaApp.publicacion.dto.CreatePublicacionDto;
 import com.salesianostriana.dam.MiarmaApp.publicacion.dto.GetPublicacionDto;
 import com.salesianostriana.dam.MiarmaApp.publicacion.dto.PublicacionDtoConverter;
@@ -12,23 +12,15 @@ import com.salesianostriana.dam.MiarmaApp.publicacion.model.Publicacion;
 import com.salesianostriana.dam.MiarmaApp.publicacion.repos.PublicacionRepository;
 import com.salesianostriana.dam.MiarmaApp.storage.service.StorageService;
 import com.salesianostriana.dam.MiarmaApp.usuario.model.Usuario;
-import com.salesianostriana.dam.MiarmaApp.utils.MultipartImage;
-import io.github.techgnious.IVCompressor;
-import io.github.techgnious.dto.ResizeResolution;
-import io.github.techgnious.dto.VideoFormats;
+import com.salesianostriana.dam.MiarmaApp.utils.MediaTypeSelector;
 import lombok.RequiredArgsConstructor;
-import org.imgscalr.Scalr;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -39,11 +31,13 @@ public class PublicacionService extends BaseService<Publicacion, UUID, Publicaci
     private final StorageService storageService;
     private final PublicacionRepository publicacionRepository;
     private final PublicacionDtoConverter dtoConverter;
+    private final ImageScaler imageScaler;
+    private final MediaTypeSelector mediaTypeSelector;
     private MultipartFile file;
 
     public Publicacion savePublicacion(CreatePublicacionDto nuevaPublicacion, Usuario usuario,
                                        MultipartFile media) throws Exception {
-        file = selectMediaType(media);
+        file = mediaTypeSelector.selectMediaType(media);
 
         storageService.store(media);
         String filename = storageService.store(file);
@@ -74,7 +68,7 @@ public class PublicacionService extends BaseService<Publicacion, UUID, Publicaci
             Publicacion publicacionAnt = publicacionOptional.get();
 
             if(usuario.getId().equals(publicacionAnt.getPropietario().getId())) {
-                file = selectMediaType(media);
+                file = mediaTypeSelector.selectMediaType(media);
 
                 storageService.store(media);
                 String filename = storageService.store(file);
@@ -141,49 +135,5 @@ public class PublicacionService extends BaseService<Publicacion, UUID, Publicaci
 
     public List<Publicacion> findAllPublicacionesUsuarioLogueado(Usuario usuario) {
         return repositorio.findAllByPropietarioEquals(usuario);
-    }
-
-    private MultipartFile selectMediaType(MultipartFile media) throws Exception {
-        if (Objects.requireNonNull(media.getContentType()).contains("video")) {
-            return compressVideo(media);
-        } else if(media.getContentType().contains("image")) {
-            return resizeImage(media);
-        } else {
-            throw new MediaTypeNotValidException(media.getContentType());
-        }
-    }
-
-    private MultipartFile resizeImage(MultipartFile originalImage) throws Exception{
-        BufferedImage postImage = Scalr
-                .resize(ImageIO
-                        .read(originalImage
-                                .getInputStream()), 1024);
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-        ImageIO.write(postImage, "png", outputStream);
-
-        byte[] data = outputStream.toByteArray();
-
-        return MultipartImage.builder()
-                .fieldName(originalImage.getName())
-                .fileName(originalImage.getOriginalFilename())
-                .contentType(originalImage.getContentType())
-                .bytes(data)
-                .build();
-    }
-
-    private MultipartFile compressVideo(MultipartFile originalVideo) throws Exception {
-        IVCompressor compressor = new IVCompressor();
-
-        byte[] data = compressor.reduceVideoSize(originalVideo.getBytes(),
-                VideoFormats.MP4, ResizeResolution.R720P);
-
-        return MultipartImage.builder()
-                .fieldName(originalVideo.getName())
-                .fileName(originalVideo.getOriginalFilename())
-                .contentType(originalVideo.getContentType())
-                .bytes(data)
-                .build();
     }
 }
