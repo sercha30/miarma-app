@@ -142,6 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
           SizedBox(
               height: 500,
               child: ListView.builder(
+                itemCount: posts.length,
                 itemBuilder: (BuildContext context, int index) {
                   return _createPublicPostViewItem(context, posts[index]);
                 },
@@ -183,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-        Image.network('http://10.0.2.2' + post.media!.substring(16)),
+        Image.network('http://10.0.2.2' + post.transformedMedia!.substring(16)),
         Padding(
           padding: const EdgeInsets.all(6.0),
           child: Row(

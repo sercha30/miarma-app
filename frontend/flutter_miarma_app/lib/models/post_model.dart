@@ -2,7 +2,8 @@ class Post {
   String? id;
   String? titulo;
   String? contenido;
-  String? media;
+  String? originalMedia;
+  String? transformedMedia;
   String? nickUsuario;
   String? avatar;
   String? fechaPublicacion;
@@ -12,7 +13,8 @@ class Post {
     this.id,
     this.titulo,
     this.contenido,
-    this.media,
+    this.originalMedia,
+    this.transformedMedia,
     this.nickUsuario,
     this.avatar,
     this.fechaPublicacion,
@@ -22,7 +24,8 @@ class Post {
     id = json['id']?.toString();
     titulo = json['titulo']?.toString();
     contenido = json['contenido']?.toString();
-    media = json['media']?.toString();
+    originalMedia = json['originalMedia']?.toString();
+    transformedMedia = json['transformedMedia']?.toString();
     nickUsuario = json['nickUsuario']?.toString();
     avatar = json['avatar']?.toString();
     fechaPublicacion = json['fechaPublicacion']?.toString();
@@ -33,7 +36,8 @@ class Post {
     data['id'] = id;
     data['titulo'] = titulo;
     data['contenido'] = contenido;
-    data['media'] = media;
+    data['originalMedia'] = originalMedia;
+    data['transformedMedia'] = transformedMedia;
     data['nickUsuario'] = nickUsuario;
     data['avatar'] = avatar;
     data['fechaPublicacion'] = fechaPublicacion;
