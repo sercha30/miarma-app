@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_miarma_app/utils/preferences.dart';
 import 'ui/login_screen.dart';
 import 'ui/menu_screen.dart';
 import 'ui/register_screen.dart';
 
 void main() {
   runApp(const MyApp());
+  PreferenceUtils.init();
 }
 
 class MyApp extends StatelessWidget {

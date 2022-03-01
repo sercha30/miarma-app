@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_miarma_app/blocs/login_bloc/login_bloc.dart';
-import 'package:flutter_miarma_app/models/auth/login_dto.dart';
+import 'package:flutter_miarma_app/models/auth/login/login_dto.dart';
 import 'package:flutter_miarma_app/resources/repository/auth_repository/auth_repository.dart';
 import 'package:flutter_miarma_app/resources/repository/auth_repository/auth_repository_impl.dart';
 import 'package:flutter_miarma_app/styles.dart';
@@ -118,11 +118,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           borderSide:
                               BorderSide(color: Colors.grey, width: 5.0))),
                   onSaved: (String? value) {},
-                  validator: (String? value) {},
+                  validator: (String? value) {
+                    return (value == null || !value.contains('@'))
+                        ? 'Email not valid'
+                        : null;
+                  },
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 15.0),
                   child: TextFormField(
+                    obscureText: true,
                     controller: passwordController,
                     decoration: const InputDecoration(
                         contentPadding: EdgeInsets.all(8.0),
@@ -132,7 +137,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             borderSide:
                                 BorderSide(color: Colors.grey, width: 5.0))),
                     onSaved: (String? value) {},
-                    validator: (String? value) {},
+                    validator: (String? value) {
+                      return (value == null || value.isEmpty)
+                          ? 'You need to write your password'
+                          : null;
+                    },
                   ),
                 ),
                 GestureDetector(
@@ -143,6 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           password: passwordController.text);
                       BlocProvider.of<LoginBloc>(context)
                           .add(DoLoginEvent(loginDto));
+                      Navigator.pushNamed(context, '/home');
                     }
                   },
                   child: Container(

@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return BlocProvider(
       create: (context) {
         return PostsBloc(postRepository)
-          ..add(FetchPostWithType(Constants.public));
+          ..add(const FetchPostWithType(Constants.public));
       },
       child: Scaffold(
         body: _createPosts(context),
@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
             retry: () {
               context
                   .watch<PostsBloc>()
-                  .add(FetchPostWithType(Constants.public));
+                  .add(const FetchPostWithType(Constants.public));
             });
       } else if (state is PostsFetched) {
         return _createPublicPostsView(context, state.posts);

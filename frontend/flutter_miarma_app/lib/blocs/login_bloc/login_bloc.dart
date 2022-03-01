@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_miarma_app/models/auth/login_dto.dart';
-import 'package:flutter_miarma_app/models/auth/login_response.dart';
+import 'package:flutter_miarma_app/models/auth/login/login_dto.dart';
+import 'package:flutter_miarma_app/models/auth/login/login_response.dart';
 import 'package:flutter_miarma_app/resources/repository/auth_repository/auth_repository.dart';
 
 part 'login_event.dart';

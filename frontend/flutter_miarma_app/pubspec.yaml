@@ -43,6 +43,7 @@ dependencies:
   equatable: ^2.0.3
   video_player: ^2.2.18
   shared_preferences: ^2.0.13
+  image_picker: ^0.8.4+10
 
 dev_dependencies:
   flutter_test:
