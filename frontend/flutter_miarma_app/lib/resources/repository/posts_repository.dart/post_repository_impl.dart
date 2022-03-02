@@ -1,19 +1,18 @@
 import 'dart:convert';
 
-import 'package:flutter_miarma_app/models/post_model.dart';
+import 'package:flutter_miarma_app/models/post/post_dto.dart';
+import 'package:flutter_miarma_app/models/post/post_model.dart';
 import 'package:flutter_miarma_app/resources/repository/posts_repository.dart/post_repository.dart';
 import 'package:flutter_miarma_app/utils/constants.dart';
 import 'package:flutter_miarma_app/utils/preferences.dart';
-import 'package:http/http.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 class PostRepositoryImpl extends PostRepository {
-  final Client _client = Client();
-
   @override
   Future<List<Post>> fetchPosts(String type) async {
-    final response = await _client
-        .get(Uri.parse('http://10.0.2.2:8080/post/$type'), headers: {
+    final response =
+        await http.get(Uri.parse('http://10.0.2.2:8080/post/$type'), headers: {
       'Authorization':
           'Bearer ${PreferenceUtils.getString(Constants.SHARED_BEARER_TOKEN)}'
     });
@@ -23,6 +22,36 @@ class PostRepositoryImpl extends PostRepository {
           .toList();
     } else {
       throw Exception('Failed to load posts');
+    }
+  }
+
+  @override
+  Future<Post> createPost(PostDto postDto, String imagePath) async {
+    Map<String, String> headers = {
+      'Content-Type': 'multipart/form-data',
+    };
+
+    var uri = Uri.parse('http://10.0.2.2:8080/post/');
+
+    var body = jsonEncode({
+      'titulo': postDto.titulo,
+      'contenido': postDto.contenido,
+      'public': postDto.public
+    });
+
+    var request = http.MultipartRequest('POST', uri)
+      ..files.add(http.MultipartFile.fromString('post', body,
+          contentType: MediaType('application', 'json')))
+      ..files.add(await http.MultipartFile.fromPath('media', imagePath,
+          contentType: MediaType('image', 'jpg')))
+      ..headers.addAll(headers);
+
+    final response = await request.send();
+
+    if (response.statusCode == 201) {
+      return Post.fromJson(jsonDecode(await response.stream.bytesToString()));
+    } else {
+      throw Exception('Failed to create post');
     }
   }
 }

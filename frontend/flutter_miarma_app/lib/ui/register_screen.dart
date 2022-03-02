@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_miarma_app/blocs/image_pick_block/image_pick_bloc.dart';
@@ -6,6 +8,8 @@ import 'package:flutter_miarma_app/models/auth/register/register_dto.dart';
 import 'package:flutter_miarma_app/resources/repository/auth_repository/auth_repository.dart';
 import 'package:flutter_miarma_app/resources/repository/auth_repository/auth_repository_impl.dart';
 import 'package:flutter_miarma_app/ui/home_screen.dart';
+import 'package:flutter_miarma_app/utils/constants.dart';
+import 'package:flutter_miarma_app/utils/preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sign_button/sign_button.dart';
 
@@ -158,12 +162,51 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ]),
           ),
           SizedBox(
-            height: 500,
+            height: 700,
             child: Form(
               key: _formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  BlocConsumer<ImagePickBlocBloc, ImagePickBlocState>(
+                    listenWhen: (context, state) {
+                      return state is ImageSelectedSuccessState;
+                    },
+                    listener: (context, state) {},
+                    buildWhen: (context, state) {
+                      return state is ImagePickBlocInitial ||
+                          state is ImageSelectedSuccessState;
+                    },
+                    builder: (context, state) {
+                      if (state is ImageSelectedSuccessState) {
+                        print('PATH ${state.pickedFile.path}');
+                        return Column(
+                          children: [
+                            Image.file(
+                              File(state.pickedFile.path),
+                              height: 100,
+                            ),
+                            ElevatedButton(
+                                onPressed: () {
+                                  PreferenceUtils.setString(
+                                      Constants.SHARED_AVATAR_IMAGE_PATH,
+                                      state.pickedFile.path);
+                                },
+                                child: const Text('Subir imagen'))
+                          ],
+                        );
+                      }
+                      return Center(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            BlocProvider.of<ImagePickBlocBloc>(context).add(
+                                const SelectImageEvent(ImageSource.gallery));
+                          },
+                          child: const Text('Seleccionar imagen'),
+                        ),
+                      );
+                    },
+                  ),
                   TextFormField(
                     controller: emailController,
                     decoration: const InputDecoration(
@@ -293,8 +336,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             public: isPublic,
                             password: passwordController.text,
                             password2: password2Controller.text);
-                        BlocProvider.of<RegisterBloc>(context)
-                            .add(DoRegisterEvent(registerDto));
+                        BlocProvider.of<RegisterBloc>(context).add(
+                            DoRegisterEvent(
+                                registerDto,
+                                PreferenceUtils.getString(
+                                    Constants.SHARED_AVATAR_IMAGE_PATH)!));
                         Navigator.pushNamed(context, '/login');
                       }
                     },

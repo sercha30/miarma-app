@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_miarma_app/ui/new_post_screen.dart';
 import 'home_screen.dart';
 import 'profile_screen.dart';
 import 'search_screen.dart';
@@ -17,7 +18,7 @@ class _MenuScreenState extends State<MenuScreen> {
   static const List<Widget> _widgetOptions = [
     HomeScreen(),
     SearchScreen(),
-    HomeScreen(),
+    NewPostScreen(),
     HomeScreen(),
     ProfileScreen()
   ];
@@ -35,16 +36,16 @@ class _MenuScreenState extends State<MenuScreen> {
       bottomNavigationBar: CupertinoTabBar(
         items: <BottomNavigationBarItem>[
           const BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
           ),
           const BottomNavigationBarItem(
-            icon: Icon(Icons.search),
+            icon: Icon(Icons.search_outlined),
           ),
           const BottomNavigationBarItem(
-            icon: Icon(Icons.slideshow),
+            icon: Icon(Icons.add_box_outlined),
           ),
           const BottomNavigationBarItem(
-            icon: Icon(Icons.local_mall),
+            icon: Icon(Icons.local_mall_outlined),
           ),
           BottomNavigationBarItem(
             icon: ClipRRect(
