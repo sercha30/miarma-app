@@ -74,6 +74,10 @@ public class PublicacionController {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder
                 .fromHttpUrl(request.getRequestURL().toString());
 
+        if(publicaciones.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+
         return ResponseEntity.ok()
                 .header("link", paginationUtilsLinks.createLinkHeader(publicaciones, uriBuilder))
                 .body(publicaciones.stream()
