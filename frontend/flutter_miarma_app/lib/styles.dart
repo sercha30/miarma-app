@@ -21,6 +21,10 @@ class CustomStyles {
       GoogleFonts.getFont('Nunito', fontSize: 14, color: Colors.black);
   static TextStyle get userProfileNameText => GoogleFonts.getFont('Nunito',
       fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black);
+  static TextStyle get noContentTitleText => GoogleFonts.getFont('Nunito',
+      fontSize: 32, fontWeight: FontWeight.bold, color: Colors.black);
+  static TextStyle get noContentSubText =>
+      GoogleFonts.getFont('Nunito', fontSize: 18, color: Colors.black);
 
   //Paddings, margins...
   static const double bodyPadding = 20.0;

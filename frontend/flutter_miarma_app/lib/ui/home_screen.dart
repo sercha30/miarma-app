@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_miarma_app/blocs/posts_bloc/posts_bloc.dart';
-import 'package:flutter_miarma_app/models/post_model.dart';
+import 'package:flutter_miarma_app/models/post/post_model.dart';
 import 'package:flutter_miarma_app/resources/repository/posts_repository.dart/post_repository.dart';
 import 'package:flutter_miarma_app/resources/repository/posts_repository.dart/post_repository_impl.dart';
 import 'package:flutter_miarma_app/styles.dart';
@@ -144,7 +144,11 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ListView.builder(
                 itemCount: posts.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return _createPublicPostViewItem(context, posts[index]);
+                  if (posts.isNotEmpty) {
+                    return _createPublicPostViewItem(context, posts[index]);
+                  } else {
+                    return _createEmptyPostsView(context);
+                  }
                 },
                 padding: const EdgeInsets.all(0),
                 scrollDirection: Axis.vertical,
@@ -173,18 +177,22 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Image.network(
                         post.avatar!,
                         width: 30,
-                        fit: BoxFit.cover,
+                        height: 30,
+                        fit: BoxFit.fill,
                       ),
                     ),
                   ),
-                  Text(post.nickUsuario!),
+                  Text(
+                    post.nickUsuario!,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
               const Icon(Icons.more_horiz)
             ],
           ),
         ),
-        Image.network('http://10.0.2.2' + post.transformedMedia!.substring(16)),
+        Image.network(post.transformedMedia!),
         Padding(
           padding: const EdgeInsets.all(6.0),
           child: Row(
@@ -230,6 +238,31 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         )
       ],
+    );
+  }
+
+  Widget _createEmptyPostsView(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/no-content-photo.png',
+              width: 300,
+            ),
+            Text(
+              'No hay posts',
+              style: CustomStyles.noContentTitleText,
+            ),
+            Text(
+              'Parece que nadie ha publicado nada aún...',
+              style: CustomStyles.noContentSubText,
+            )
+          ],
+        ),
+      ),
     );
   }
 }

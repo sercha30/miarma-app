@@ -7,13 +7,13 @@ import 'package:flutter_miarma_app/blocs/register_bloc/register_bloc.dart';
 import 'package:flutter_miarma_app/models/auth/register/register_dto.dart';
 import 'package:flutter_miarma_app/resources/repository/auth_repository/auth_repository.dart';
 import 'package:flutter_miarma_app/resources/repository/auth_repository/auth_repository_impl.dart';
-import 'package:flutter_miarma_app/ui/home_screen.dart';
 import 'package:flutter_miarma_app/utils/constants.dart';
 import 'package:flutter_miarma_app/utils/preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sign_button/sign_button.dart';
 
 import '../styles.dart';
+import 'login_screen.dart';
 
 typedef OnPickImageCallback = void Function(
     double? maxWidth, double? maxHeight, int? quality);
@@ -37,12 +37,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController password2Controller = TextEditingController();
   TextEditingController birthdateController = TextEditingController();
   bool isPublic = true;
-
-  List<XFile>? _imageFileList;
-
-  set _imageFile(XFile? value) {
-    _imageFileList = value == null ? null : <XFile>[value];
-  }
 
   @override
   void initState() {
@@ -89,7 +83,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const HomeScreen()));
+                          builder: (context) => const LoginScreen()));
                 } else if (state is RegisterErrorState) {
                   _showSnackbar(context, state.message);
                 }
@@ -182,9 +176,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         print('PATH ${state.pickedFile.path}');
                         return Column(
                           children: [
-                            Image.file(
-                              File(state.pickedFile.path),
-                              height: 100,
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: Image.file(
+                                File(state.pickedFile.path),
+                                width: 150,
+                                height: 150,
+                                fit: BoxFit.fill,
+                              ),
                             ),
                             ElevatedButton(
                                 onPressed: () {
@@ -197,12 +196,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         );
                       }
                       return Center(
-                        child: ElevatedButton(
-                          onPressed: () {
+                        child: InkWell(
+                          onTap: () {
                             BlocProvider.of<ImagePickBlocBloc>(context).add(
                                 const SelectImageEvent(ImageSource.gallery));
                           },
-                          child: const Text('Seleccionar imagen'),
+                          child: Image.asset(
+                            'assets/images/mock-avatar.png',
+                            width: 150,
+                          ),
                         ),
                       );
                     },
@@ -341,7 +343,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 registerDto,
                                 PreferenceUtils.getString(
                                     Constants.SHARED_AVATAR_IMAGE_PATH)!));
-                        Navigator.pushNamed(context, '/login');
                       }
                     },
                     child: Container(

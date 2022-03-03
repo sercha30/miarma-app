@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_miarma_app/styles.dart';
 
 class ErrorPage extends StatelessWidget {
   final String message;
@@ -17,14 +18,22 @@ class ErrorPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Image.asset(
+            'assets/images/no-content-photo.png',
+            width: 300,
+          ),
           Text(
-            message,
-            textAlign: TextAlign.center,
+            'No hay posts',
+            style: CustomStyles.noContentTitleText,
+          ),
+          Text(
+            'Parece que nadie ha publicado nada aún...',
+            style: CustomStyles.noContentSubText,
           ),
           ElevatedButton(
             onPressed: () => retry,
             child: const Text(
-              'Retry',
+              'Actualizar',
             ),
           ),
         ],

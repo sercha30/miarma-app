@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_miarma_app/ui/new_post_screen.dart';
+import 'package:flutter_miarma_app/utils/constants.dart';
+import 'package:flutter_miarma_app/utils/preferences.dart';
 import 'home_screen.dart';
 import 'profile_screen.dart';
 import 'search_screen.dart';
@@ -50,10 +54,12 @@ class _MenuScreenState extends State<MenuScreen> {
           BottomNavigationBarItem(
             icon: ClipRRect(
               borderRadius: BorderRadius.circular(100),
-              child: Image.asset(
-                'assets/images/mock-profile-photo.jpg',
+              child: Image.file(
+                File(PreferenceUtils.getString(
+                    Constants.SHARED_AVATAR_IMAGE_PATH)!),
                 width: 30,
-                fit: BoxFit.cover,
+                height: 30,
+                fit: BoxFit.fill,
               ),
             ),
           ),

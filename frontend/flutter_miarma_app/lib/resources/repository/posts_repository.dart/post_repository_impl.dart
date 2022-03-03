@@ -20,7 +20,10 @@ class PostRepositoryImpl extends PostRepository {
       return List.from(json.decode(response.body))
           .map((e) => Post.fromJson(e))
           .toList();
+    } else if (response.statusCode == 404) {
+      return List.empty(growable: false);
     } else {
+      print(response.statusCode);
       throw Exception('Failed to load posts');
     }
   }
@@ -29,6 +32,8 @@ class PostRepositoryImpl extends PostRepository {
   Future<Post> createPost(PostDto postDto, String imagePath) async {
     Map<String, String> headers = {
       'Content-Type': 'multipart/form-data',
+      'Authorization':
+          'Bearer ${PreferenceUtils.getString(Constants.SHARED_BEARER_TOKEN)}'
     };
 
     var uri = Uri.parse('http://10.0.2.2:8080/post/');
@@ -47,6 +52,7 @@ class PostRepositoryImpl extends PostRepository {
       ..headers.addAll(headers);
 
     final response = await request.send();
+    print(response.statusCode);
 
     if (response.statusCode == 201) {
       return Post.fromJson(jsonDecode(await response.stream.bytesToString()));

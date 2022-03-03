@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_miarma_app/models/post_model.dart';
+import 'package:flutter_miarma_app/models/post/post_model.dart';
 import 'package:flutter_miarma_app/resources/repository/posts_repository.dart/post_repository.dart';
 
 part 'posts_event.dart';

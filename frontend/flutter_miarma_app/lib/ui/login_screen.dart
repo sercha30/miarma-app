@@ -6,6 +6,7 @@ import 'package:flutter_miarma_app/resources/repository/auth_repository/auth_rep
 import 'package:flutter_miarma_app/resources/repository/auth_repository/auth_repository_impl.dart';
 import 'package:flutter_miarma_app/styles.dart';
 import 'package:flutter_miarma_app/ui/home_screen.dart';
+import 'package:flutter_miarma_app/ui/menu_screen.dart';
 import 'package:flutter_miarma_app/utils/constants.dart';
 import 'package:flutter_miarma_app/utils/preferences.dart';
 
@@ -63,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const HomeScreen()));
+                          builder: (context) => const MenuScreen()));
                 } else if (state is LoginErrorState) {
                   _showSnackbar(context, state.message);
                 }
@@ -152,7 +153,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           password: passwordController.text);
                       BlocProvider.of<LoginBloc>(context)
                           .add(DoLoginEvent(loginDto));
-                      Navigator.pushNamed(context, '/home');
                     }
                   },
                   child: Container(
