@@ -15,6 +15,7 @@ import com.salesianostriana.dam.MiarmaApp.utils.MediaTypeSelector;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -125,8 +126,33 @@ public class PublicacionService extends BaseService<Publicacion, UUID, Publicaci
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    public void forceDeletePublicacion(UUID id) {
+        Optional<Publicacion> publicacionOptional = findById(id);
+
+        if (publicacionOptional.isEmpty()) {
+            throw new SingleEntityNotFoundException(id.toString(), Publicacion.class);
+        } else {
+            Publicacion publicacion = publicacionOptional.get();
+
+            storageService.deleteFile(publicacion.getTransformedMedia());
+            delete(publicacion);
+        }
+    }
+
     public Page<Publicacion> findAllPublicacionesPublicas(Pageable pageable) {
         Page<Publicacion> publicaciones = publicacionRepository.findAllByPublicIsTrue(pageable);
+
+        if(publicaciones.isEmpty()) {
+            throw new ListEntityNotFoundException(Publicacion.class);
+        } else {
+            return publicaciones;
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<Publicacion> findAllPublicaciones() {
+        List<Publicacion> publicaciones = findAll();
 
         if(publicaciones.isEmpty()) {
             throw new ListEntityNotFoundException(Publicacion.class);

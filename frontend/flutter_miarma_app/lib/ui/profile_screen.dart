@@ -49,9 +49,8 @@ class _ProfileScreenState extends State<ProfileScreen>
           return const Center(child: CircularProgressIndicator());
         } else if (state is UserProfileFetched) {
           return _createUserProfileView(context, state.userProfileResponse);
-        } else {
-          return const Text('Not support');
         }
+        return const Text('Not support');
       },
     );
   }

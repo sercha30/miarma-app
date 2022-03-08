@@ -1,5 +1,7 @@
 package com.salesianostriana.dam.MiarmaApp.usuario.service;
 
+import com.salesianostriana.dam.MiarmaApp.errors.exception.entity.ListEntityNotFoundException;
+import com.salesianostriana.dam.MiarmaApp.errors.exception.entity.SingleEntityNotFoundException;
 import com.salesianostriana.dam.MiarmaApp.general.BaseService;
 import com.salesianostriana.dam.MiarmaApp.media.ImageScaler;
 import com.salesianostriana.dam.MiarmaApp.storage.service.StorageService;
@@ -8,6 +10,7 @@ import com.salesianostriana.dam.MiarmaApp.usuario.model.UserRole;
 import com.salesianostriana.dam.MiarmaApp.usuario.model.Usuario;
 import com.salesianostriana.dam.MiarmaApp.usuario.repos.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service("userDetailsService")
@@ -110,5 +115,50 @@ public class UsuarioService extends BaseService<Usuario, UUID, UsuarioRepository
                 .build();
 
         return edit(usuario);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<Usuario> getAllUsuarios() {
+        List<Usuario> usuarios = findAll();
+
+        if (usuarios.isEmpty()) {
+            throw new ListEntityNotFoundException(Usuario.class);
+        } else {
+            return usuarios;
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    public Usuario giveAdmin(UUID usuarioId) {
+        Optional<Usuario> usuarioOptional = findById(usuarioId);
+
+        if (usuarioOptional.isEmpty()) {
+            throw new SingleEntityNotFoundException(usuarioId.toString(), Usuario.class);
+        } else {
+            Usuario usuario = usuarioOptional.get();
+
+            if (!usuario.getRol().equals(UserRole.ADMIN)) {
+                usuario.setRol(UserRole.ADMIN);
+                edit(usuario);
+            }
+            return usuario;
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    public Usuario removeAdmin(UUID usuarioId) {
+        Optional<Usuario> usuarioOptional = findById(usuarioId);
+
+        if (usuarioOptional.isEmpty()) {
+            throw new SingleEntityNotFoundException(usuarioId.toString(), Usuario.class);
+        } else {
+            Usuario usuario = usuarioOptional.get();
+
+            if (!usuario.getRol().equals(UserRole.USUARIO)) {
+                usuario.setRol(UserRole.USUARIO);
+                edit(usuario);
+            }
+            return usuario;
+        }
     }
 }

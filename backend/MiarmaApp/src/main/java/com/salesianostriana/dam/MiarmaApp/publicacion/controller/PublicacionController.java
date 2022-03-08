@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RequestMapping("/post")
 public class PublicacionController {
 
@@ -64,6 +65,20 @@ public class PublicacionController {
                                                @AuthenticationPrincipal Usuario usuario) {
         publicacionService.deletePublicacion(id, usuario);
         return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/admin/{id}")
+    public ResponseEntity<?> forceDeletePublicacion(@PathVariable UUID id) {
+        publicacionService.forceDeletePublicacion(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/admin/all")
+    public ResponseEntity<List<GetPublicacionDto>> getAllPublicaciones() {
+        return ResponseEntity.ok(publicacionService.findAllPublicaciones()
+                .stream()
+                .map(publicacionDtoConverter::convertPublicacionToGetPublicacionDto)
+                .collect(Collectors.toList()));
     }
 
     @GetMapping("/public")

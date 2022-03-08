@@ -13,11 +13,14 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RequestMapping("/")
 public class UsuarioController {
 
@@ -77,5 +80,23 @@ public class UsuarioController {
                 .body(
                         usuarioDtoConverter
                                 .convertUsuarioToGetPerfilUsuarioDto(usuarioService.editUsuario(usuarioDto, file, usuario)));
+    }
+
+    @GetMapping("admin/users")
+    public ResponseEntity<List<GetUsuarioDto>> getAllUsuarios() {
+        return ResponseEntity.ok(usuarioService.getAllUsuarios()
+                .stream()
+                .map(usuarioDtoConverter::convertUsuarioToUsuarioDto)
+                .collect(Collectors.toList()));
+    }
+
+    @PutMapping("admin/user/{id}/giveAdmin")
+    public ResponseEntity<GetUsuarioDto> giveAdmin(@PathVariable UUID id) {
+        return ResponseEntity.ok(usuarioDtoConverter.convertUsuarioToUsuarioDto(usuarioService.giveAdmin(id)));
+    }
+
+    @PutMapping("admin/user/{id}/removeAdmin")
+    public ResponseEntity<GetUsuarioDto> removeAdmin(@PathVariable UUID id) {
+        return ResponseEntity.ok(usuarioDtoConverter.convertUsuarioToUsuarioDto(usuarioService.removeAdmin(id)));
     }
 }
