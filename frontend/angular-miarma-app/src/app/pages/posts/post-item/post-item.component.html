@@ -1,0 +1,17 @@
+<mat-card class="post-item">
+  <mat-card-header>
+    <img src="{{ postInput.avatar }}" alt="UserAvatar" />
+    <h1 class="card-title">
+      {{ postInput.nickUsuario }}
+    </h1>
+  </mat-card-header>
+  <mat-card-content>
+    <p>ID: {{ postInput.id }}</p>
+    <p>Fecha de publicación: {{ postInput.fechaPublicacion }}</p>
+    <p>Contenido: {{ postInput.contenido }}</p>
+    <p>Es público: {{ postInput.public }}</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-icon-button (click)="deletePost()"><mat-icon>delete</mat-icon></button>
+  </mat-card-actions>
+</mat-card>

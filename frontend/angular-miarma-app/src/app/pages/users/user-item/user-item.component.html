@@ -1,0 +1,19 @@
+<mat-card class="user-item">
+  <mat-card-header>
+    <img src="{{ userInput.avatar }}" alt="UserAvatar" />
+    <h1 class="card-title">
+      {{ userInput.nick }}
+    </h1>
+  </mat-card-header>
+  <mat-card-content>
+    <p>ID: {{ userInput.id }}</p>
+    <p>Email: {{ userInput.email }}</p>
+    <p>Nick: {{ userInput.nick }}</p>
+    <p>Es público: {{ userInput.isPublic }}</p>
+    <p>Rol: {{ userInput.rol }}</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-icon-button (click)="giveAdmin()"><mat-icon>verified_user</mat-icon></button>
+    <button mat-icon-button (click)="removeAdmin()"><mat-icon>pan_tool</mat-icon></button>
+  </mat-card-actions>
+</mat-card>
